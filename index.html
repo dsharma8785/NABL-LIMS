@@ -1,0 +1,2872 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NABL LIMS — Coal Testing Laboratory, NTPC Solapur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{
+  --navy:#0C2340; --navy-2:#12315C; --steel:#3A4F66; --paper:#F3F5F7; --white:#FFFFFF;
+  --teal:#0E7C86; --teal-d:#095A62; --teal-bg:#E4F3F2;
+  --amber:#C97A2B; --amber-d:#8F5518; --amber-bg:#FBEEDF;
+  --red:#B3261E; --red-d:#7E1B15; --red-bg:#FBEAE9;
+  --ink:#16222E; --ink-2:#4D5D6B; --ink-3:#7C8A96; --border:#DCE3E8; --border-2:#C6D0D7;
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;}
+code,.mono{font-family:'IBM Plex Mono',monospace;}
+button{font-family:inherit;cursor:pointer;}
+input,select,textarea{font-family:inherit;font-size:13px;}
+.app{display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{width:230px;flex:none;background:var(--navy);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
+.brand{padding:20px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.12);}
+.brand .name{font-weight:600;font-size:14.5px;line-height:1.35;}
+.brand .sub{font-size:11px;color:#9FB3C8;margin-top:4px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.3px;}
+.nav{padding:10px;flex:1;overflow-y:auto;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:#C7D5E2;font-size:13px;cursor:pointer;margin-bottom:2px;border:none;background:transparent;width:100%;text-align:left;}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:#fff;}
+.nav-item.active{background:var(--teal);color:#fff;font-weight:500;}
+.nav-item .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.55;}
+.nav-foot{padding:14px 16px;border-top:1px solid rgba(255,255,255,0.12);font-size:11px;color:#8CA0B4;}
+.nav-foot button{background:none;border:1px solid rgba(255,255,255,0.25);color:#C7D5E2;padding:6px 10px;border-radius:7px;font-size:11.5px;width:100%;margin-top:8px;}
+.nav-foot button:hover{background:rgba(255,255,255,0.08);}
+
+/* MAIN */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:14px 26px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;}
+.topbar h1{font-size:17px;margin:0;font-weight:600;}
+.topbar .crumb{font-size:11.5px;color:var(--ink-3);margin-bottom:2px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.3px;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.content{padding:24px 26px 60px;flex:1;}
+
+/* BUTTONS */
+.btn{border:1px solid var(--border-2);background:var(--white);color:var(--ink);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:6px;}
+.btn:hover{background:var(--paper);}
+.btn-primary{background:var(--navy);border-color:var(--navy);color:#fff;}
+.btn-primary:hover{background:var(--navy-2);}
+.btn-teal{background:var(--teal);border-color:var(--teal);color:#fff;}
+.btn-teal:hover{background:var(--teal-d);}
+.btn-sm{padding:5px 10px;font-size:12px;border-radius:6px;}
+.btn-ghost{border-color:transparent;background:transparent;color:var(--ink-2);}
+.btn-ghost:hover{background:var(--paper);}
+.btn-danger{color:var(--red-d);border-color:#EBC5C2;}
+.btn-danger:hover{background:var(--red-bg);}
+.btn:disabled{opacity:0.45;cursor:not-allowed;}
+
+/* CARDS / GRID */
+.grid{display:grid;gap:14px;}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+@media (max-width:1000px){.grid-4{grid-template-columns:repeat(2,1fr);}.grid-3{grid-template-columns:repeat(2,1fr);}}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;}
+.kpi .label{font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.4px;font-weight:600;}
+.kpi .value{font-size:26px;font-weight:700;margin-top:6px;font-family:'IBM Plex Mono',monospace;}
+.kpi .foot{font-size:12px;color:var(--ink-3);margin-top:4px;}
+
+/* SECTION HEADER */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:26px 0 12px;}
+.section-head h2{font-size:15px;margin:0;font-weight:600;}
+.section-head:first-child{margin-top:0;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.4px;color:var(--ink-3);background:var(--paper);padding:9px 12px;font-weight:600;border-bottom:1px solid var(--border);}
+td{padding:10px 12px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#FAFBFC;}
+.empty-row td{text-align:center;color:var(--ink-3);padding:26px;font-style:normal;}
+
+/* CHIP */
+.chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:600;}
+.chip-teal{background:var(--teal-bg);color:var(--teal-d);}
+.chip-amber{background:var(--amber-bg);color:var(--amber-d);}
+.chip-red{background:var(--red-bg);color:var(--red-d);}
+.chip-grey{background:#EDEFF1;color:var(--ink-2);}
+
+/* PROGRESS BAR */
+.bar{height:6px;border-radius:4px;background:#E9EDF0;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;background:var(--teal);}
+
+/* MODAL */
+.modal-backdrop{position:fixed;inset:0;background:rgba(12,20,32,0.55);display:flex;align-items:flex-start;justify-content:center;z-index:100;overflow-y:auto;padding:40px 20px;}
+.modal{background:#fff;border-radius:12px;width:100%;max-width:560px;padding:22px 24px 24px;}
+.modal h3{margin:0 0 4px;font-size:16px;}
+.modal .modal-sub{font-size:12.5px;color:var(--ink-3);margin-bottom:16px;}
+.field{margin-bottom:13px;}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:5px;}
+.field input,.field select,.field textarea{width:100%;padding:8px 10px;border:1px solid var(--border-2);border-radius:7px;background:#fff;}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid #B9DEE0;border-color:var(--teal);}
+.field-row{display:flex;gap:10px;}
+.field-row .field{flex:1;}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;border-top:1px solid var(--border);padding-top:14px;}
+.err{color:var(--red-d);font-size:12px;margin-top:4px;display:none;}
+
+/* MISC */
+.muted{color:var(--ink-3);}
+.small{font-size:12px;}
+.hidden{display:none !important;}
+.view{display:none;}
+.view.active{display:block;}
+.toast-wrap{position:fixed;bottom:20px;right:20px;z-index:200;display:flex;flex-direction:column;gap:8px;}
+.toast{background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,0.2);max-width:340px;}
+.toast.err{background:var(--red-d);}
+.toast.ok{background:var(--teal-d);}
+.icon-btn{border:none;background:transparent;color:var(--ink-3);padding:4px 6px;border-radius:6px;font-size:14px;}
+.icon-btn:hover{background:var(--paper);color:var(--ink);}
+.divider{height:1px;background:var(--border);margin:16px 0;}
+.readiness-ring{position:relative;width:74px;height:74px;}
+.readiness-ring svg{transform:rotate(-90deg);}
+.readiness-ring .rlabel{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:15px;}
+.tab-strip{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.tab-strip button{background:none;border:none;padding:9px 4px;margin-right:18px;font-size:13px;color:var(--ink-3);border-bottom:2px solid transparent;font-weight:500;}
+.tab-strip button.active{color:var(--navy);border-bottom-color:var(--teal);}
+.staff-banner{background:var(--navy);color:#fff;padding:10px 26px;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;}
+.staff-banner button{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:#fff;padding:5px 10px;border-radius:6px;font-size:12px;}
+.folder-link{font-size:12px;color:var(--teal-d);text-decoration:none;}
+.folder-link:hover{text-decoration:underline;}
+.sync-note{font-size:11.5px;color:var(--ink-3);margin-top:6px;}
+.q-row{border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;background:var(--paper);}
+.q-row .opt-row{display:flex;align-items:center;gap:8px;margin-top:6px;}
+.q-row .opt-row input[type=text]{flex:1;}
+/* ASSESSOR MODE — read-only enforcement */
+body.assessor-mode .btn-primary,
+body.assessor-mode .icon-btn,
+body.assessor-mode td .btn-sm,
+body.assessor-mode .nav-foot button,
+body.assessor-mode #topbarSync{ display:none !important; }
+body.assessor-mode .content{border-top:3px solid var(--teal);}
+body.assessor-mode .manual-select{display:none !important;}
+/* ROLE-BASED UI GATING (soft — a convenience layer, not a security boundary) */
+[title="Delete"]{ display:none !important; }
+body.role-quality-manager [title="Delete"], body.role-lab-in-charge [title="Delete"]{ display:inline-flex !important; }
+[onclick^="newDocVersion"]{ display:none !important; }
+body.role-quality-manager [onclick^="newDocVersion"], body.role-lab-in-charge [onclick^="newDocVersion"]{ display:inline-flex !important; }
+[onclick^="tryCloseNcr"]{ display:none !important; }
+body.role-technical-reviewer [onclick^="tryCloseNcr"], body.role-quality-manager [onclick^="tryCloseNcr"], body.role-lab-in-charge [onclick^="tryCloseNcr"]{ display:inline-block !important; }
+body.assessor-mode [title="Delete"], body.assessor-mode [onclick^="newDocVersion"], body.assessor-mode [onclick^="tryCloseNcr"]{ display:none !important; }
+.clause-row{display:grid;grid-template-columns:90px 1fr 110px 2fr;gap:14px;align-items:start;padding:12px 0;border-bottom:1px solid var(--border);}
+.clause-row:last-child{border-bottom:none;}
+.clause-code{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--navy);}
+.clause-status{display:flex;align-items:flex-start;}
+.manual-select{padding:5px 7px;border:1px solid var(--border-2);border-radius:6px;font-size:12px;margin-top:4px;}
+@media print{
+  .sidebar, .topbar, .staff-banner, #modalRoot, .toast-wrap, .section-head button, .icon-btn, .btn-sm, .btn-primary{ display:none !important; }
+  .main{width:100% !important;}
+  body{ background:#fff; }
+  .card, table{ break-inside:avoid; border:1px solid #999 !important; }
+  .content{ padding:0 !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="staffBanner" class="staff-banner hidden">
+  <span>Staff view — signed in as <strong id="staffNameLabel"></strong></span>
+  <button onclick="exitStaffView()">Exit staff view</button>
+</div>
+<div id="assessorBanner" class="staff-banner hidden" style="background:var(--teal-d);">
+  <span>Assessor / auditor view — read-only. Every edit, delete and sync control is hidden in this mode.</span>
+  <span><button onclick="window.print()" style="margin-right:8px;">🖨 Print evidence pack</button><button onclick="exitAssessorMode()">Exit assessor view</button></span>
+</div>
+
+<div class="app">
+  <div class="sidebar">
+    <div class="brand">
+      <div class="name">Coal Testing Laboratory</div>
+      <div class="sub">NTPC SOLAPUR · TC-11458</div>
+    </div>
+    <div class="nav" id="navList"></div>
+    <div class="nav-foot">
+      <div id="storageModeNote" class="hidden" style="background:rgba(201,122,43,0.25);color:#F5D9BC;padding:6px 8px;border-radius:6px;margin-bottom:10px;font-size:10.5px;"></div>
+      <div id="userBox" style="background:rgba(255,255,255,0.06);border-radius:8px;padding:8px 10px;margin-bottom:10px;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.4px;color:#7C93A8;">Signed in as</div>
+        <div id="userLabel" style="font-size:13px;font-weight:600;margin:2px 0;">Guest (read-only actions unlocked)</div>
+        <button onclick="openSignIn()">Sign in / switch user</button>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border-radius:8px;padding:8px 10px;margin-bottom:10px;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.4px;color:#7C93A8;">Google Drive storage</div>
+        <div id="driveStatusLabel" style="font-size:12.5px;margin:4px 0;">⚪ Not connected</div>
+        <button onclick="connectGoogleDrive()">Connect Google Drive</button>
+        <button onclick="openDriveSettings()" style="margin-top:6px;">Drive settings / backup</button>
+      </div>
+      <div style="font-size:10.5px;color:#7C93A8;margin-top:2px;">Live readiness updates as you complete modules</div>
+      <button onclick="enterStaffView()">Staff sign-in view</button>
+      <button onclick="enterAssessorMode()" style="border-color:#5FBDAE;color:#9FE1CB;">Assessor / auditor view</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <div class="crumb" id="crumb">DASHBOARD</div>
+        <h1 id="pageTitle">Overview</h1>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-ghost btn-sm" id="btnPrevTab" onclick="navStep(-1)" title="Previous tab">← Back</button>
+        <button class="btn btn-ghost btn-sm" id="btnNextTab" onclick="navStep(1)" title="Next tab">Forward →</button>
+        <button class="btn" id="topbarSync" onclick="syncAllToDrive()"><span>☁</span> Sync all to Drive</button>
+      </div>
+    </div>
+    <div class="content" id="content">
+
+      <!-- DASHBOARD -->
+      <div class="view active" id="view-dashboard"></div>
+      <!-- TRAINING -->
+      <div class="view" id="view-training"></div>
+      <!-- EQUIPMENT -->
+      <div class="view" id="view-equipment"></div>
+      <!-- VENDOR -->
+      <div class="view" id="view-vendor"></div>
+      <!-- PROCUREMENT -->
+      <div class="view" id="view-procurement"></div>
+      <!-- STAFF -->
+      <div class="view" id="view-staffdir"></div>
+      <!-- DOCUMENTS -->
+      <div class="view" id="view-documents"></div>
+      <!-- NABL LIBRARY -->
+      <div class="view" id="view-nablibrary"></div>
+      <!-- RISK -->
+      <div class="view" id="view-risk"></div>
+      <!-- NCR -->
+      <div class="view" id="view-ncr"></div>
+      <!-- ALERTS -->
+      <div class="view" id="view-alerts"></div>
+      <!-- REPORTS -->
+      <div class="view" id="view-reports"></div>
+      <!-- COMPETENCY -->
+      <div class="view" id="view-competency"></div>
+      <!-- TRACEABILITY -->
+      <div class="view" id="view-traceability"></div>
+      <!-- ENVIRONMENT -->
+      <div class="view" id="view-environment"></div>
+      <!-- SELF AUDIT -->
+      <div class="view" id="view-selfaudit"></div>
+      <!-- SAMPLE REGISTER -->
+      <div class="view" id="view-sampleregister"></div>
+      <!-- CONTRACT REVIEW -->
+      <div class="view" id="view-contractreview"></div>
+      <!-- COMPLAINTS -->
+      <div class="view" id="view-complaints"></div>
+      <!-- MGMT REVIEW -->
+      <div class="view" id="view-mgmtreview"></div>
+      <!-- MOCK AUDITS -->
+      <div class="view" id="view-mockaudits"></div>
+      <!-- DECLARATIONS -->
+      <div class="view" id="view-declarations"></div>
+      <!-- SCOPE PARAMS -->
+      <div class="view" id="view-scopeparams"></div>
+      <!-- CLAUSE EXPLORER -->
+      <div class="view" id="view-clauseexplorer"></div>
+
+    </div>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+/* ============ STORAGE LAYER: native (claude.ai) / Google Drive / localStorage ============ */
+const _nativeStorage = (window.storage && typeof window.storage.get==='function') ? window.storage : null;
+
+// -- local (per-browser) fallback --
+const _LOCAL_PREFIX = 'nabl_lims_local::';
+function _localReadAll(){ try{ return JSON.parse(localStorage.getItem(_LOCAL_PREFIX+'data')||'{}'); }catch(e){ return {}; } }
+function _localWriteAll(obj){ localStorage.setItem(_LOCAL_PREFIX+'data', JSON.stringify(obj)); }
+const _localStorageBackend = {
+  async get(key){ const all=_localReadAll(); return (key in all) ? {key, value:all[key]} : null; },
+  async set(key, value){ const all=_localReadAll(); all[key]=value; _localWriteAll(all); return {key, value}; },
+  async delete(key){ const all=_localReadAll(); const existed = key in all; delete all[key]; _localWriteAll(all); return existed ? {key, deleted:true} : null; },
+  async list(prefix){ const all=_localReadAll(); return { keys: Object.keys(all).filter(k=>!prefix||k.startsWith(prefix)) }; }
+};
+
+// -- Google Drive backend (direct browser OAuth, no backend server, no claude.ai dependency) --
+const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
+let googleTokenClient = null;
+let driveAccessToken = null;
+let driveConnected = false;
+let driveFolderId = localStorage.getItem('nabl_lims_drive_folder') || null;
+let driveBackupFolderId = localStorage.getItem('nabl_lims_drive_backup_folder') || null;
+const driveFileIdCache = JSON.parse(localStorage.getItem('nabl_lims_drive_fileid_cache') || '{}');
+function _cacheFileId(name, id){ driveFileIdCache[name]=id; localStorage.setItem('nabl_lims_drive_fileid_cache', JSON.stringify(driveFileIdCache)); }
+function getGoogleClientId(){ return localStorage.getItem('nabl_lims_google_client_id') || ''; }
+function setGoogleClientId(v){ localStorage.setItem('nabl_lims_google_client_id', v||''); }
+
+async function driveApiFetch(url, options){
+  options = options || {};
+  options.headers = Object.assign({}, options.headers, { Authorization: 'Bearer ' + driveAccessToken });
+  const res = await fetch(url, options);
+  if(res.status===401){ driveConnected=false; driveAccessToken=null; throw new Error('Google session expired — click Connect Google Drive again'); }
+  if(!res.ok){ const t = await res.text().catch(()=>res.statusText); throw new Error('Drive API error '+res.status+': '+t.slice(0,200)); }
+  return res;
+}
+async function driveEnsureFolder(name, parentId){
+  const q = encodeURIComponent(`name='${name.replace(/'/g,"\\'")}' and mimeType='application/vnd.google-apps.folder' and trashed=false`+(parentId?` and '${parentId}' in parents`:''));
+  const res = await driveApiFetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`);
+  const data = await res.json();
+  if(data.files && data.files.length) return data.files[0].id;
+  const meta = { name, mimeType:'application/vnd.google-apps.folder' };
+  if(parentId) meta.parents = [parentId];
+  const createRes = await driveApiFetch('https://www.googleapis.com/drive/v3/files?fields=id', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(meta) });
+  const created = await createRes.json();
+  return created.id;
+}
+async function driveFindFileId(filename){
+  if(driveFileIdCache[filename]) return driveFileIdCache[filename];
+  const q = encodeURIComponent(`name='${filename.replace(/'/g,"\\'")}' and '${driveFolderId}' in parents and trashed=false`);
+  const res = await driveApiFetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`);
+  const data = await res.json();
+  if(data.files && data.files.length){ _cacheFileId(filename, data.files[0].id); return data.files[0].id; }
+  return null;
+}
+function _driveFilename(key){ return key.replace(/[^a-zA-Z0-9_-]/g,'_') + '.json'; }
+const _driveStorageBackend = {
+  async get(key){
+    const filename = _driveFilename(key);
+    const fileId = await driveFindFileId(filename);
+    if(!fileId) return null;
+    try{
+      const res = await driveApiFetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`);
+      const value = await res.text();
+      return { key, value };
+    }catch(e){ return null; }
+  },
+  async set(key, value){
+    const filename = _driveFilename(key);
+    let fileId = await driveFindFileId(filename);
+    if(fileId){
+      await driveApiFetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: value });
+    } else {
+      const boundary = 'nablboundary'+Date.now();
+      const metadata = { name: filename, parents: [driveFolderId] };
+      const body = `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n${value}\r\n--${boundary}--`;
+      const createRes = await driveApiFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id', { method:'POST', headers:{'Content-Type':`multipart/related; boundary=${boundary}`}, body });
+      const created = await createRes.json();
+      fileId = created.id;
+      _cacheFileId(filename, fileId);
+    }
+    return { key, value };
+  },
+  async delete(key){
+    const filename = _driveFilename(key);
+    const fileId = await driveFindFileId(filename);
+    if(!fileId) return null;
+    await driveApiFetch(`https://www.googleapis.com/drive/v3/files/${fileId}`, { method:'DELETE' });
+    delete driveFileIdCache[filename]; localStorage.setItem('nabl_lims_drive_fileid_cache', JSON.stringify(driveFileIdCache));
+    return { key, deleted:true };
+  },
+  async list(prefix){
+    const res = await driveApiFetch(`https://www.googleapis.com/drive/v3/files?q='${driveFolderId}'+in+parents+and+trashed=false&fields=files(id,name)&pageSize=1000`);
+    const data = await res.json();
+    const keys = (data.files||[]).map(f=>f.name.replace(/\.json$/,'')).filter(k=>!prefix||k.startsWith(prefix));
+    return { keys };
+  }
+};
+
+function initGoogleAuth(cb){
+  if(typeof google === 'undefined' || !google.accounts){ toast('Google Sign-In script did not load — this only works when the file is hosted on a real website, not opened as a local file or previewed inside claude.ai','err'); return; }
+  const clientId = getGoogleClientId();
+  if(!clientId){ openDriveSettings(); return; }
+  googleTokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: clientId,
+    scope: DRIVE_SCOPE,
+    callback: async (resp) => {
+      if(resp.error){ toast('Google sign-in failed: '+resp.error, 'err'); return; }
+      driveAccessToken = resp.access_token;
+      driveConnected = true;
+      try{
+        if(!driveFolderId){ driveFolderId = await driveEnsureFolder('NABL_LIMS_Data'); localStorage.setItem('nabl_lims_drive_folder', driveFolderId); }
+        if(!driveBackupFolderId){ driveBackupFolderId = await driveEnsureFolder('Backups', driveFolderId); localStorage.setItem('nabl_lims_drive_backup_folder', driveBackupFolderId); }
+        toast('Connected to Google Drive','ok');
+        updateDriveStatusUI();
+        refreshStorageModeNote();
+        if(cb) cb();
+      }catch(e){ toast('Drive connected but folder setup failed: '+e.message,'err'); }
+    }
+  });
+  googleTokenClient.requestAccessToken({ prompt: driveAccessToken ? '' : 'consent' });
+}
+function connectGoogleDrive(){ initGoogleAuth(async ()=>{ await loadAll(); showView(currentView||'dashboard'); renderDashboard(); }); }
+function disconnectGoogleDrive(){ driveConnected=false; driveAccessToken=null; updateDriveStatusUI(); refreshStorageModeNote(); toast('Disconnected from Google Drive — using this browser local storage instead','ok'); }
+function updateDriveStatusUI(){
+  const el = document.getElementById('driveStatusLabel');
+  if(!el) return;
+  if(driveConnected) el.innerHTML = '🟢 Connected — <a class="folder-link" href="https://drive.google.com/drive/folders/'+driveFolderId+'" target="_blank">Open folder ↗</a>';
+  else el.innerHTML = '⚪ Not connected';
+}
+function openDriveSettings(){
+  openModal(`
+    <h3>Google Drive storage settings</h3>
+    <div class="modal-sub">Connects this dashboard directly to your Google Drive — no claude.ai required. One-time setup needed the first time.</div>
+    <div class="field"><label>Google OAuth Client ID</label><input id="f-gcid" value="${esc(getGoogleClientId())}" placeholder="xxxxxxxx.apps.googleusercontent.com"></div>
+    <div class="muted small" style="margin-bottom:12px;">Don't have one yet? In Google Cloud Console: create a project → enable the Google Drive API → configure the OAuth consent screen → create an OAuth Client ID (type: Web application) → add this page's exact URL under "Authorized JavaScript origins" → paste the Client ID here. Ask me for the full walkthrough any time.</div>
+    <div style="margin-bottom:14px;">Status: <span id="driveStatusLabel2">${driveConnected ? '🟢 Connected' : '⚪ Not connected'}</span></div>
+    <div class="modal-actions" style="justify-content:flex-start;flex-wrap:wrap;gap:8px;">
+      <button class="btn" onclick="saveGoogleClientIdFromModal()">Save Client ID</button>
+      <button class="btn btn-teal" onclick="connectGoogleDrive()">Connect / reconnect</button>
+      ${driveConnected ? '<button class="btn" onclick="disconnectGoogleDrive()">Disconnect</button>' : ''}
+      <button class="btn" onclick="backupNow()">☁ Backup now to Drive</button>
+      <button class="btn" onclick="downloadFullBackup()">⬇ Download backup (.json)</button>
+    </div>
+    <div class="modal-actions"><button class="btn" onclick="closeModal()">Close</button></div>
+  `);
+}
+function saveGoogleClientIdFromModal(){
+  const v = document.getElementById('f-gcid').value.trim();
+  setGoogleClientId(v);
+  toast('Client ID saved in this browser','ok');
+}
+async function backupNow(){
+  if(!driveConnected){ toast('Connect Google Drive first','err'); return; }
+  try{
+    const stamp = new Date().toISOString().replace(/[:T]/g,'-').slice(0,16);
+    const backupSubfolder = await driveEnsureFolder('Backup_'+stamp, driveBackupFolderId);
+    const res = await driveApiFetch(`https://www.googleapis.com/drive/v3/files?q='${driveFolderId}'+in+parents+and+trashed=false&fields=files(id,name)&pageSize=1000`);
+    const data = await res.json();
+    for(const f of (data.files||[])){
+      if(f.id===driveBackupFolderId) continue;
+      await driveApiFetch(`https://www.googleapis.com/drive/v3/files/${f.id}/copy`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ parents:[backupSubfolder] }) });
+    }
+    toast('Backup complete — see Backups/'+('Backup_'+stamp)+' in Drive','ok');
+  }catch(e){ toast('Backup failed: '+e.message,'err'); }
+}
+function downloadFullBackup(){
+  const payload = { type:'full_local_backup', generatedAt:new Date().toISOString(), state };
+  const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'NABL_LIMS_backup_'+todayStr()+'.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  toast('Backup file downloaded','ok');
+}
+
+// -- router: this is what every module in the app already calls via window.storage --
+window.storage = {
+  async get(key, shared){
+    if(shared && driveConnected){ try{ return await _driveStorageBackend.get(key); }catch(e){ toast('Drive read failed, using local copy: '+e.message,'err'); } }
+    if(_nativeStorage) return _nativeStorage.get(key, shared);
+    return _localStorageBackend.get(key);
+  },
+  async set(key, value, shared){
+    if(shared && driveConnected){ try{ return await _driveStorageBackend.set(key, value); }catch(e){ toast('Drive save failed, saved locally instead: '+e.message,'err'); return _localStorageBackend.set(key,value); } }
+    if(_nativeStorage) return _nativeStorage.set(key, value, shared);
+    return _localStorageBackend.set(key, value);
+  },
+  async delete(key, shared){
+    if(shared && driveConnected){ try{ return await _driveStorageBackend.delete(key); }catch(e){ return null; } }
+    if(_nativeStorage) return _nativeStorage.delete(key, shared);
+    return _localStorageBackend.delete(key);
+  },
+  async list(prefix, shared){
+    if(shared && driveConnected){ try{ return await _driveStorageBackend.list(prefix); }catch(e){ return {keys:[]}; } }
+    if(_nativeStorage) return _nativeStorage.list(prefix, shared);
+    return _localStorageBackend.list(prefix);
+  }
+};
+window._usingLocalStorageFallback = !_nativeStorage;
+
+/* ============ CONSTANTS ============ */
+const DRIVE_FOLDERS = {
+  root: '1_ArEn3x65lPN_v6gWmb_KrCWZzaoxTvE',
+  training: '1wsPAZxFjLMhljXX_Dn2gPJuf-AY0LOJT',
+  calibration: '1BsdUWqVpNZSfwBJYPjVKe6RFpuF7n0UW',
+  vendor: '1YcS9Y1vGOzhZ8LBLLLLVAYvEwiE1wTiI',
+  procurement: '1sAX5E4lalMCV05ZqN94drjuiwhb5YOJM',
+  snapshots: '1gdJGWG5C2w25lPKqwgVGQHamzpdGav70',
+  documents: '1lVUYT6D4smBK0IxpWL0QZfscyy5U-Jfp',
+  ncr: '186utz9jZgxv8qtz9hEGqdOSoeFRKcqE7',
+  risk: '1zKW7m_uhYC2t0dg0w6YZ-9xutlmzZOn6',
+  nablibrary: '17Sl6BRZR6DN_J1Zvnr-B9OdYiizdhKcf',
+  traceability: '1fCU-UJAONdsgm272TjdkK-5Vf0rjEUlJ',
+  environment: '1HpukW16c_16ti5sdKQEaeKtLEPmc3CEJ',
+  reports: '1d4E5CW4EyUZbKlgQX6eAqFoejRqDWO0o',
+  competency: '19kxSCh3405uhEBKem8rlfpT6Ttqb_EVa',
+  declarations: '1PHR0wHT83vAubipCRWguIskNlqa9YKY2',
+  contractReview: '17qbQ1ulN7b19w7Lc2avx9hUXjwwdRkzy',
+  sampleRegister: '1WZN_u8CxgfBkZ12WFadg7j5V7z3DSj8u',
+  complaints: '1vj2NyVJk-uLmR2cHFe_ZmBMnmggBsGGw',
+  mgmtReview: '1-DL2rXvSW2ODqczoZ1ZSQW7e_k9nZBYP',
+  mockAudits: '1pfA5C6r4XJTNatMXVLfixJFFthmvdc4W',
+  scopeParams: '19Os6wn9TwYc61b2Xgcj6MyQIReKEPa0d'
+};
+
+const NAV_ITEMS = [
+  {id:'dashboard', label:'Overview', icon:'◆'},
+  {id:'selfaudit', label:'Self-audit / clause checklist', icon:'◆'},
+  {id:'alerts', label:'Alerts center', icon:'●'},
+  {id:'reports', label:'Test report issuance', icon:'●'},
+  {id:'scopeparams', label:'Scope & test parameters', icon:'●'},
+  {id:'training', label:'Training', icon:'●'},
+  {id:'competency', label:'Competency & authorization', icon:'●'},
+  {id:'equipment', label:'Equipment & calibration', icon:'●'},
+  {id:'traceability', label:'Metrological traceability', icon:'●'},
+  {id:'environment', label:'Environmental monitoring', icon:'●'},
+  {id:'sampleregister', label:'Sample register', icon:'●'},
+  {id:'vendor', label:'Vendor evaluation', icon:'●'},
+  {id:'procurement', label:'Procurement', icon:'●'},
+  {id:'contractreview', label:'Contract review', icon:'●'},
+  {id:'complaints', label:'Complaints', icon:'●'},
+  {id:'documents', label:'Document control', icon:'●'},
+  {id:'risk', label:'Risk register', icon:'●'},
+  {id:'ncr', label:'NCR & CAPA', icon:'●'},
+  {id:'mgmtreview', label:'Management review', icon:'●'},
+  {id:'mockaudits', label:'Mock assessments', icon:'●'},
+  {id:'declarations', label:'Impartiality declarations', icon:'●'},
+  {id:'nablibrary', label:'NABL policy library', icon:'●'},
+  {id:'clauseexplorer', label:'Clause explorer', icon:'◆'},
+  {id:'staffdir', label:'Staff directory', icon:'●'},
+];
+
+const STORAGE_KEYS = {
+  trainings:'lims:trainings', equipment:'lims:equipment', vendors:'lims:vendors',
+  procurement:'lims:procurement', staff:'lims:staff', documents:'lims:documents',
+  risks:'lims:risks', ncrs:'lims:ncrs', nabldocs:'lims:nabldocs',
+  competency:'lims:competency', crm:'lims:crm', envlogs:'lims:envlogs', reports:'lims:reports',
+  declarations:'lims:declarations', contractreview:'lims:contractreview', sampleregister:'lims:sampleregister',
+  complaints:'lims:complaints', mgmtreview:'lims:mgmtreview', mockaudits:'lims:mockaudits', manualClauses:'lims:manualClauses',
+  scopeparams:'lims:scopeparams'
+};
+
+let currentUser = null; // {name, role}
+const ROLE_PERMISSIONS = {
+  'Analyst': { delete:false, newDocVersion:false, closeNcr:false, approveHigh:false },
+  'Technical Reviewer': { delete:false, newDocVersion:false, closeNcr:true, approveHigh:false },
+  'Authorised Signatory': { delete:false, newDocVersion:false, closeNcr:true, approveHigh:true },
+  'Quality Manager': { delete:true, newDocVersion:true, closeNcr:true, approveHigh:true },
+  'Lab In-charge': { delete:true, newDocVersion:true, closeNcr:true, approveHigh:true },
+  'Guest': { delete:false, newDocVersion:false, closeNcr:false, approveHigh:false },
+};
+function roleSlug(r){ return (r||'guest').toLowerCase().replace(/[^a-z]+/g,'-'); }
+async function loadCurrentUser(){
+  try{
+    const res = await window.storage.get('lims:currentUser', false);
+    if(res && res.value) currentUser = JSON.parse(res.value);
+  }catch(e){ currentUser = null; }
+  applyCurrentUserUI();
+}
+async function setCurrentUser(name, role){
+  currentUser = name ? { name, role } : null;
+  try{ await window.storage.set('lims:currentUser', JSON.stringify(currentUser), false); }catch(e){}
+  applyCurrentUserUI();
+}
+function applyCurrentUserUI(){
+  Object.values(ROLE_PERMISSIONS); // noop reference
+  document.body.className = document.body.className.replace(/\brole-[a-z-]+\b/g,'').trim();
+  document.body.classList.add('role-'+roleSlug(currentUser ? currentUser.role : 'Guest'));
+  const label = document.getElementById('userLabel');
+  if(label) label.textContent = currentUser ? (currentUser.name+' — '+currentUser.role) : 'Guest (view-only actions unlocked)';
+}
+function openSignIn(){
+  const names = state.staff;
+  openModal(`
+    <h3>Sign in</h3>
+    <div class="modal-sub">This controls which action buttons you see. It is a UI convenience for a shared device, not a secure login — anyone can switch users.</div>
+    <div class="field"><label>Staff member</label>
+      <select id="f-signin">
+        <option value="">— Guest (view-only) —</option>
+        ${names.map(s=>'<option value="'+esc(s.name)+'" '+(currentUser&&currentUser.name===s.name?'selected':'')+'>'+esc(s.name)+' — '+esc(s.role)+'</option>').join('')}
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmSignIn()">Sign in</button>
+    </div>
+  `);
+}
+async function confirmSignIn(){
+  const sel = document.getElementById('f-signin');
+  const name = sel.value;
+  const staffRec = state.staff.find(s=>s.name===name);
+  await setCurrentUser(name || null, staffRec ? staffRec.role : 'Guest');
+  closeModal();
+  toast(name ? ('Signed in as '+name) : 'Signed out — Guest mode','ok');
+}
+
+let state = { trainings:[], equipment:[], vendors:[], procurement:[], staff:[], documents:[], risks:[], ncrs:[], nabldocs:[],
+  competency:[], crm:[], envlogs:[], reports:[], declarations:[], contractreview:[], sampleregister:[], complaints:[], mgmtreview:[], mockaudits:[], manualClauses:{}, scopeparams:[] };
+let currentView = 'dashboard';
+let staffSession = null;
+
+/* ============ STORAGE HELPERS ============ */
+async function loadKey(key, storeKey){
+  try{
+    const res = await window.storage.get(storeKey, true);
+    state[key] = res && res.value ? JSON.parse(res.value) : [];
+  }catch(e){ state[key] = []; }
+}
+async function loadAll(){
+  await Promise.all([
+    loadKey('trainings', STORAGE_KEYS.trainings),
+    loadKey('equipment', STORAGE_KEYS.equipment),
+    loadKey('vendors', STORAGE_KEYS.vendors),
+    loadKey('procurement', STORAGE_KEYS.procurement),
+    loadKey('staff', STORAGE_KEYS.staff),
+    loadKey('documents', STORAGE_KEYS.documents),
+    loadKey('risks', STORAGE_KEYS.risks),
+    loadKey('ncrs', STORAGE_KEYS.ncrs),
+    loadKey('nabldocs', STORAGE_KEYS.nabldocs),
+    loadKey('competency', STORAGE_KEYS.competency),
+    loadKey('crm', STORAGE_KEYS.crm),
+    loadKey('envlogs', STORAGE_KEYS.envlogs),
+    loadKey('reports', STORAGE_KEYS.reports),
+    loadKey('declarations', STORAGE_KEYS.declarations),
+    loadKey('contractreview', STORAGE_KEYS.contractreview),
+    loadKey('sampleregister', STORAGE_KEYS.sampleregister),
+    loadKey('complaints', STORAGE_KEYS.complaints),
+    loadKey('mgmtreview', STORAGE_KEYS.mgmtreview),
+    loadKey('mockaudits', STORAGE_KEYS.mockaudits),
+    loadKey('scopeparams', STORAGE_KEYS.scopeparams),
+    loadManualClauses(),
+  ]);
+  seedNablLibrary();
+  seedDefaultTrainings();
+  seedScopeParams();
+}
+async function loadManualClauses(){
+  try{
+    const res = await window.storage.get(STORAGE_KEYS.manualClauses, true);
+    state.manualClauses = res && res.value ? JSON.parse(res.value) : {};
+  }catch(e){ state.manualClauses = {}; }
+}
+async function saveManualClauses(){
+  try{ await window.storage.set(STORAGE_KEYS.manualClauses, JSON.stringify(state.manualClauses), true); }
+  catch(e){ toast('Could not save clause note','err'); }
+}
+const NABL_LIBRARY_SEED = [
+  {key:'NABL 160', purpose:'Specific Criteria for Accreditation of Testing Laboratories'},
+  {key:'NABL 130/141', purpose:'Specific Criteria — supplementary requirements for testing'},
+  {key:'NABL 133', purpose:'Policy on Traceability of Measurement Results'},
+  {key:'NABL 218', purpose:'Policy for Measurement Uncertainty'},
+  {key:'NABL 219', purpose:'Policy on Assessment'},
+  {key:'Scope of Accreditation (TC-11458)', purpose:'Exact certified scope, as issued'},
+  {key:'Previous NABL Assessment Report', purpose:'Continuity — prior findings and CAPAs'},
+  {key:'NABL Symbol Usage Guideline', purpose:'Rules for use of accreditation symbol on reports'},
+];
+function seedNablLibrary(){
+  if(state.nabldocs.length) return;
+  state.nabldocs = NABL_LIBRARY_SEED.map(d=>({ id:uid(), name:d.key, purpose:d.purpose, driveLink:'', status:'Missing', notes:'' }));
+  saveKey('nabldocs');
+}
+
+/* ============ SEED: SCOPE & TEST PARAMETERS ============ */
+const SCOPE_PARAMS_SEED = [
+  {parameter:'Gross Calorific Value (GCV)', matrix:'Coal', method:'IS 1350 (Part 2) / ASTM D5865', range:'2000–8000 kcal/kg', mu:'±80 kcal/kg (k=2)'},
+  {parameter:'Total Moisture', matrix:'Coal', method:'IS 1350 (Part 1)', range:'0–20 %', mu:'±0.3 % (k=2)'},
+  {parameter:'Inherent Moisture', matrix:'Coal', method:'IS 1350 (Part 1)', range:'0–10 %', mu:'±0.2 % (k=2)'},
+  {parameter:'Ash Content', matrix:'Coal', method:'IS 1350 (Part 1)', range:'5–45 %', mu:'±0.4 % (k=2)'},
+  {parameter:'Volatile Matter', matrix:'Coal', method:'IS 1350 (Part 1)', range:'10–45 %', mu:'±0.5 % (k=2)'},
+  {parameter:'Fixed Carbon (by difference)', matrix:'Coal', method:'IS 1350 (Part 1)', range:'20–60 %', mu:'±0.6 % (k=2)'},
+  {parameter:'Total Sulphur', matrix:'Coal', method:'IS 1350 (Part 3) / ASTM D4239', range:'0.2–5 %', mu:'±0.05 % (k=2)'},
+  {parameter:'Ash Fusion Temperature', matrix:'Coal Ash', method:'IS 1355', range:'900–1600 °C', mu:'±20 °C (k=2)'},
+  {parameter:'Hardgrove Grindability Index (HGI)', matrix:'Coal', method:'IS 4433 / ASTM D409', range:'30–100 HGI', mu:'±3 HGI (k=2)'},
+  {parameter:'Size Analysis (Sieve)', matrix:'Coal', method:'IS 437', range:'0–50 mm', mu:'±1 % retained (k=2)'},
+];
+function seedScopeParams(){
+  if(state.scopeparams.length) return;
+  state.scopeparams = SCOPE_PARAMS_SEED.map(p=>({ id:uid(), ...p, accredited:true }));
+  saveKey('scopeparams');
+}
+
+/* ============ SEED: DEFAULT TRAINING MODULES (Coal Testing + NABL Awareness) ============ */
+function seedDefaultTrainings(){
+  if(state.trainings.length) return;
+  state.trainings = [
+    {
+      id:uid(), title:'Coal Testing Fundamentals — Proximate & Calorific Analysis', category:'Method-specific', dueDate:'',
+      material:
+`This module covers the core parameters routinely tested in a thermal-power coal laboratory.
+
+1. PROXIMATE ANALYSIS (IS 1350)
+   • Total Moisture — loss in mass on air-drying then oven-drying a bulk sample at 108±2°C.
+   • Inherent Moisture — moisture retained in the air-dried analysis sample, oven-dried at 108±2°C.
+   • Ash — residue after complete combustion of the analysis sample at 815±10°C.
+   • Volatile Matter — loss in mass (corrected for moisture) on heating in a covered crucible at 900±10°C for 7 minutes.
+   • Fixed Carbon — calculated by difference: 100 − (Moisture% + Ash% + VM%).
+
+2. GROSS CALORIFIC VALUE (GCV)
+   • Determined using a bomb calorimeter under an oxygen atmosphere (IS 1350 Part 2).
+   • The sample is combusted in a sealed bomb; heat released raises the temperature of a known mass of water.
+   • Corrections are applied for fuse wire, acid formation (nitric/sulphuric), and cotton thread.
+   • Net Calorific Value (NCV) is derived from GCV by correcting for the latent heat of the moisture formed from hydrogen in the fuel.
+
+3. TOTAL SULPHUR
+   • Measured by Eschka method or automated IR/combustion analyzer (IS 1350 Part 3).
+   • Relevant to boiler corrosion risk and emission compliance (SPCB/CPCB limits).
+
+4. ASH FUSION TEMPERATURE (IS 1355)
+   • Determines the softening/melting behaviour of coal ash — critical for boiler slagging/fouling risk.
+   • Four characteristic temperatures are recorded: Initial Deformation, Softening, Hemispherical, and Flow temperature, under both oxidising and reducing atmospheres.
+
+5. WHY THIS MATTERS FOR NABL
+   • Every parameter above must trace to a validated method (Cl. 7.2), be within an authorised analyst's competence (Cl. 6.2), use calibrated equipment (Cl. 6.4), and be reported with measurement uncertainty (Cl. 7.6).`,
+      quiz:[
+        {q:'At what temperature is Ash content determined per IS 1350?', options:['108±2°C','900±10°C','815±10°C','600±5°C'], correct:2},
+        {q:'Fixed Carbon is:', options:['Measured directly by combustion','Calculated by difference','Equal to GCV divided by 2','Measured using a bomb calorimeter'], correct:1},
+        {q:'GCV is determined using which instrument?', options:['Muffle furnace','Bomb calorimeter','Sieve shaker','HGI apparatus'], correct:1},
+        {q:'Ash Fusion Temperature testing is important mainly for assessing:', options:['Analyst competence','Boiler slagging/fouling risk','Sample transport time','Report formatting'], correct:1},
+        {q:'Net Calorific Value differs from Gross Calorific Value because it corrects for:', options:['Ash content','Total sulphur','Latent heat of moisture from hydrogen combustion','Fixed carbon'], correct:2},
+      ],
+      assignedStaff:[], completions:{}, createdAt:todayStr()
+    },
+    {
+      id:uid(), title:'NABL & ISO/IEC 17025:2017 Awareness', category:'QMS / ISO 17025', dueDate:'',
+      material:
+`This module gives every staff member the working knowledge expected during an NABL assessment.
+
+1. WHAT IS NABL?
+   The National Accreditation Board for Testing and Calibration Laboratories accredits laboratories against ISO/IEC 17025:2017, confirming technical competence to produce valid, traceable results.
+
+2. THE STANDARD'S STRUCTURE
+   • Clause 4 — General requirements: Impartiality and Confidentiality.
+   • Clause 5 — Structural requirements: legal identity, organisation, responsibilities.
+   • Clause 6 — Resource requirements: Personnel, Facilities & environment, Equipment, Metrological traceability, External providers.
+   • Clause 7 — Process requirements: Review of requests, Method selection, Sampling, Handling of test items, Technical records, Measurement uncertainty, Validity of results, Reporting, Complaints, Nonconforming work, Data control.
+   • Clause 8 — Management system requirements: Document control, Records control, Risk & opportunities, Improvement, Corrective actions, Internal audits, Management review.
+
+3. WHAT EVERY STAFF MEMBER SHOULD BE ABLE TO ANSWER
+   • What is your role and what are you authorised to test? (Cl. 6.2)
+   • Where is the current SOP for the test you are performing, and how do you know it's the current version? (Cl. 8.3)
+   • What do you do if you get an unexpected or out-of-range result? (Cl. 7.10 — Nonconforming work)
+   • How is the equipment you use kept traceable to a national/international standard? (Cl. 6.5)
+   • What would you do if a client or colleague tried to influence a result? (Cl. 4.1 — Impartiality)
+   • Where are records of your training and authorisation kept? (Cl. 6.2)
+
+4. IMPARTIALITY & CONFIDENTIALITY (Cl. 4.1 / 4.2)
+   Staff must not let commercial, financial, or personal pressure affect technical judgement, and must protect client and result data from unauthorised disclosure.
+
+5. THE ASSESSMENT ITSELF
+   An NABL assessor will interview staff at their workstation, ask to see raw records supporting a reported result, check calibration/traceability of the equipment in use, and verify the analyst's authorisation for the method being demonstrated. Confident, honest answers — including "I don't know, but I'd check the SOP / ask my supervisor" — are always the right response.`,
+      quiz:[
+        {q:'ISO/IEC 17025:2017 primarily assesses a laboratory on:', options:['Financial performance','Technical competence to produce valid results','Marketing reach','Employee headcount'], correct:1},
+        {q:'Which clause covers Impartiality?', options:['Clause 4', 'Clause 6', 'Clause 7', 'Clause 8'], correct:0},
+        {q:'If you get an unexpected result during testing, what should you do first?', options:['Report it anyway to save time','Treat it as nonconforming work and follow the NCR process','Ignore it and repeat silently','Ask a colleague to sign it off informally'], correct:1},
+        {q:'What should you be able to show an assessor about the equipment you use?', options:['Its purchase invoice only','Its traceable calibration status','Nothing, that is not your responsibility','Its resale value'], correct:1},
+        {q:'What is the appropriate response if you genuinely do not know an answer during an assessment?', options:['Guess confidently','Say you do not know and offer to check the SOP or ask a supervisor','Avoid the assessor','Ask someone else to answer for you privately'], correct:1},
+      ],
+      assignedStaff:[], completions:{}, createdAt:todayStr()
+    },
+  ];
+  saveKey('trainings');
+}
+async function saveKey(key){
+  try{
+    const ok = await window.storage.set(STORAGE_KEYS[key], JSON.stringify(state[key]), true);
+    if(!ok) toast('Could not save — try again', 'err');
+    return !!ok;
+  }catch(e){ toast('Storage error: ' + (e.message||e), 'err'); return false; }
+}
+
+/* ============ UTIL ============ */
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fmtDate(d){ if(!d) return '—'; const dt=new Date(d+'T00:00:00'); if(isNaN(dt)) return d; return dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function daysUntil(d){ if(!d) return null; const dt=new Date(d+'T00:00:00'); const now=new Date(); now.setHours(0,0,0,0); return Math.round((dt-now)/86400000); }
+function toast(msg, kind){
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = 'toast' + (kind==='err'?' err':kind==='ok'?' ok':'');
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.transition='opacity .3s'; el.style.opacity='0'; setTimeout(()=>el.remove(),300); }, 3600);
+}
+function copyToClipboard(text){
+  navigator.clipboard.writeText(text).then(()=>toast('Copied to clipboard','ok')).catch(()=>toast('Could not copy','err'));
+}
+
+/* ============ FILE ATTACHMENTS (stored per-record, shared) ============ */
+async function attachFileToRecord(fileKey, inputEl, onDone){
+  const file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  if(file.size > 4*1024*1024){ toast('File too large (max 4MB) — use a Drive link field for bigger files','err'); return; }
+  const reader = new FileReader();
+  reader.onload = async () => {
+    try{
+      await window.storage.set('lims:file:'+fileKey, JSON.stringify({name:file.name, type:file.type, size:file.size, data:reader.result}), true);
+      toast('File attached: '+file.name, 'ok');
+      if(onDone) onDone();
+    }catch(e){ toast('Could not store file: '+(e.message||e), 'err'); }
+  };
+  reader.readAsDataURL(file);
+}
+async function getFileMeta(fileKey){
+  try{ const res = await window.storage.get('lims:file:'+fileKey, true); return res && res.value ? JSON.parse(res.value) : null; }catch(e){ return null; }
+}
+async function downloadAttachedFile(fileKey){
+  const meta = await getFileMeta(fileKey);
+  if(!meta){ toast('No file attached','err'); return; }
+  const a = document.createElement('a'); a.href = meta.data; a.download = meta.name;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+async function removeAttachedFile(fileKey){
+  try{ await window.storage.delete('lims:file:'+fileKey, true); toast('Attachment removed','ok'); }catch(e){}
+  refreshFileArea(fileKey);
+}
+function fileFieldHtml(recordKey, label){
+  return '<div class="field"><label>'+(label||'Attached file (PDF/image, max 4MB)')+'</label>'+
+    '<div id="fileArea-'+recordKey+'" class="muted small">Loading…</div>'+
+    '<input type="file" id="fileInput-'+recordKey+'" style="margin-top:6px;" onchange="attachFileToRecord(\''+recordKey+'\', this, ()=>refreshFileArea(\''+recordKey+'\'))">'+
+  '</div>';
+}
+async function refreshFileArea(recordKey){
+  const area = document.getElementById('fileArea-'+recordKey);
+  if(!area) return;
+  const meta = await getFileMeta(recordKey);
+  area.innerHTML = meta
+    ? '📎 '+esc(meta.name)+' <span class="muted">('+Math.round(meta.size/1024)+' KB)</span> '+
+      '<button type="button" class="btn btn-sm" onclick="downloadAttachedFile(\''+recordKey+'\')">Download</button> '+
+      '<button type="button" class="btn btn-sm btn-danger" onclick="removeAttachedFile(\''+recordKey+'\')">Remove</button>'
+    : '<span class="muted small">No file attached yet.</span>';
+}
+
+/* ============ MODAL ============ */
+function closeModal(){ document.getElementById('modalRoot').innerHTML=''; }
+function openModal(html){
+  document.getElementById('modalRoot').innerHTML =
+    '<div class="modal-backdrop" onmousedown="if(event.target===this) closeModal()"><div class="modal">'+html+'</div></div>';
+}
+function showFieldError(id, msg){
+  const el = document.getElementById(id);
+  if(el){ el.textContent = msg; el.style.display = msg ? 'block':'none'; }
+}
+
+/* ============ NAV / ROUTING ============ */
+function renderNav(){
+  const el = document.getElementById('navList');
+  el.innerHTML = NAV_ITEMS.map(n =>
+    '<button class="nav-item'+(n.id===currentView?' active':'')+'" onclick="showView(\''+n.id+'\')"><span class="dot"></span>'+n.label+'</button>'
+  ).join('');
+}
+function navStep(delta){
+  const ids = NAV_ITEMS.map(n=>n.id);
+  const idx = ids.indexOf(currentView);
+  const next = ids[idx+delta];
+  if(next) showView(next);
+}
+function updateNavStepButtons(){
+  const ids = NAV_ITEMS.map(n=>n.id);
+  const idx = ids.indexOf(currentView);
+  const prevBtn = document.getElementById('btnPrevTab'), nextBtn = document.getElementById('btnNextTab');
+  if(!prevBtn) return;
+  prevBtn.disabled = idx<=0;
+  nextBtn.disabled = idx===-1 || idx>=ids.length-1;
+}
+function setupRouting(){
+  window.addEventListener('popstate', (e)=>{
+    const name = (location.hash||'').replace('#','') || 'dashboard';
+    if(NAV_ITEMS.find(n=>n.id===name)) showView(name, true);
+  });
+}
+const VIEW_TITLES = { dashboard:['DASHBOARD','Overview'], training:['TRAINING','Training modules'],
+  equipment:['ASSETS','Equipment & calibration'], vendor:['SUPPLIERS','Vendor evaluation'],
+  procurement:['PROCUREMENT','Procurement register'], staffdir:['PEOPLE','Staff directory'],
+  documents:['CL. 8.2 / 8.3','Document control'], risk:['CL. 8.5','Risk & opportunity register'],
+  ncr:['CL. 7.10','Nonconforming work & CAPA'], nablibrary:['REFERENCE','NABL policy library'],
+  alerts:['ALERTS','Alerts center'], reports:['CL. 7.8','Test report issuance'],
+  competency:['CL. 6.2','Competency & authorization'], traceability:['CL. 6.5','Metrological traceability'],
+  environment:['CL. 6.3','Environmental monitoring'], selfaudit:['SELF-AUDIT','Full clause checklist'],
+  sampleregister:['CL. 7.3 / 7.4','Sample register & chain of custody'], contractreview:['CL. 7.1','Review of requests & contracts'],
+  complaints:['CL. 7.9','Complaints register'], mgmtreview:['CL. 8.9','Management review log'],
+  mockaudits:['DRY RUN','Internal mock assessments'], declarations:['CL. 4.1 / 4.2','Impartiality & confidentiality'],
+  scopeparams:['CL. 7.2','Scope & test parameters'], clauseexplorer:['AUDITOR VIEW','Clause explorer — procedures, records & retained records'] };
+function showView(name, skipHistory){
+  currentView = name;
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.getElementById('crumb').textContent = VIEW_TITLES[name][0];
+  document.getElementById('pageTitle').textContent = VIEW_TITLES[name][1];
+  renderNav();
+  updateNavStepButtons();
+  if(!skipHistory && location.hash.replace('#','') !== name){ history.pushState({view:name}, '', '#'+name); }
+  document.getElementById('content').scrollTop = 0;
+  if(name==='dashboard') renderDashboard();
+  if(name==='training') renderTraining();
+  if(name==='equipment') renderEquipment();
+  if(name==='vendor') renderVendor();
+  if(name==='procurement') renderProcurement();
+  if(name==='staffdir') renderStaffDir();
+  if(name==='documents') renderDocuments();
+  if(name==='risk') renderRisk();
+  if(name==='ncr') renderNcr();
+  if(name==='nablibrary') renderNablLibrary();
+  if(name==='alerts') renderAlerts();
+  if(name==='reports') renderReports();
+  if(name==='competency') renderCompetency();
+  if(name==='traceability') renderTraceability();
+  if(name==='environment') renderEnvironment();
+  if(name==='selfaudit') renderSelfAudit();
+  if(['sampleregister','contractreview','complaints','mgmtreview','mockaudits','declarations'].includes(name)) renderGeneric(name);
+  if(name==='scopeparams') renderScopeParams();
+  if(name==='clauseexplorer') renderClauseExplorer();
+}
+/* ============ DASHBOARD ============ */
+function computeReadiness(){
+  // Equipment: % not overdue
+  const eq = state.equipment;
+  const eqValid = eq.filter(e => (daysUntil(e.nextDue) ?? 0) >= 0).length;
+  const eqScore = eq.length ? eqValid/eq.length : 1;
+
+  // Training: average completion rate across trainings
+  let trainScore = 1;
+  if(state.trainings.length){
+    let totalAssigned=0, totalDone=0;
+    state.trainings.forEach(t=>{
+      const assigned = t.assignedStaff||[];
+      totalAssigned += assigned.length;
+      totalDone += assigned.filter(name => t.completions && t.completions[name]).length;
+    });
+    trainScore = totalAssigned ? totalDone/totalAssigned : 1;
+  }
+
+  // Vendor: % approved
+  const v = state.vendors;
+  const vApproved = v.filter(x=>x.status==='Approved').length;
+  const vScore = v.length ? vApproved/v.length : 1;
+
+  // Procurement: % not stuck (Requested > 14 days old and not advanced)
+  const p = state.procurement;
+  const pStuck = p.filter(x=> x.status!=='Received' && daysUntil(x.requestDate) !== null && (todayDiff(x.requestDate) > 21)).length;
+  const pScore = p.length ? 1 - (pStuck/p.length) : 1;
+
+  // Documents: % current (not obsolete, review not overdue)
+  const docs = state.documents;
+  const docsOk = docs.filter(d => d.status==='Current' && (daysUntil(d.reviewDate) ?? 0) >= 0).length;
+  const docScore = docs.length ? docsOk/docs.length : 1;
+
+  // Risks: % not overdue for review
+  const risks = state.risks;
+  const risksOk = risks.filter(r => (daysUntil(r.reviewDate) ?? 0) >= 0).length;
+  const riskScore = risks.length ? risksOk/risks.length : 1;
+
+  // NCR: % closed, or open-but-within-30-days
+  const ncrs = state.ncrs;
+  const ncrsOk = ncrs.filter(n => n.status==='Closed' || todayDiff(n.raisedDate) <= 30).length;
+  const ncrScore = ncrs.length ? ncrsOk/ncrs.length : 1;
+
+  // NABL library: % uploaded
+  const nl = state.nabldocs;
+  const nlOk = nl.filter(d=>d.status==='Uploaded').length;
+  const nlScore = nl.length ? nlOk/nl.length : 1;
+
+  // Competency: % authorizations valid (Authorized status, not expired)
+  const comp = state.competency;
+  const compOk = comp.filter(c => c.status==='Authorized' && (daysUntil(c.expiryDate) ?? 0) >= 0).length;
+  const compScore = comp.length ? compOk/comp.length : 1;
+
+  // CRM / traceability: % not expired
+  const crm = state.crm;
+  const crmOk = crm.filter(c => (daysUntil(c.expiryDate) ?? 0) >= 0).length;
+  const crmScore = crm.length ? crmOk/crm.length : 1;
+
+  // Environmental: % of last 20 logs without excursion
+  const env = state.envlogs.slice(-20);
+  const envOk = env.filter(e => !envExcursion(e)).length;
+  const envScore = env.length ? envOk/env.length : 1;
+
+  // Reports: % not blocked from issuance among non-issued reports
+  const reports = state.reports;
+  const reportsBlocked = reports.filter(r => r.status!=='Issued' && !checkGate(r).ok).length;
+  const reportScore = reports.length ? 1 - (reportsBlocked/reports.length) : 1;
+
+  // PT / validity of results — manually confirmed (no automated PT feed yet)
+  const ptManual = state.manualClauses && state.manualClauses['7.7'];
+  const ptScore = (ptManual && ptManual.status) ? (ptManual.status==='green'?1: ptManual.status==='amber'?0.5:0) : 0.5;
+
+  const overall = Math.round(((eqScore+trainScore+vScore+pScore+docScore+riskScore+ncrScore+nlScore+compScore+crmScore+envScore+reportScore+ptScore)/13)*100);
+  return { overall, eqScore, trainScore, vScore, pScore, docScore, riskScore, ncrScore, nlScore, compScore, crmScore, envScore, reportScore, ptScore,
+    eqValid, eqTotal:eq.length, pStuck, reportsBlocked };
+}
+function todayDiff(dateStr){ const dt=new Date(dateStr+'T00:00:00'); const now=new Date(); now.setHours(0,0,0,0); return Math.round((now-dt)/86400000); }
+
+function ringSvg(pct, size, stroke, color){
+  const r = (size-stroke)/2, c = 2*Math.PI*r, off = c*(1-pct/100);
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'">'+
+    '<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="#E9EDF0" stroke-width="'+stroke+'"/>'+
+    '<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="'+stroke+'" stroke-dasharray="'+c+'" stroke-dashoffset="'+off+'" stroke-linecap="round"/>'+
+    '</svg>';
+}
+
+function renderDashboard(){
+  const r = computeReadiness();
+  const ringColor = r.overall>=85 ? '#0E7C86' : r.overall>=60 ? '#C97A2B' : '#B3261E';
+  const overdueEq = state.equipment.filter(e=>(daysUntil(e.nextDue)??0)<0);
+  const dueSoonEq = state.equipment.filter(e=>{ const d=daysUntil(e.nextDue); return d!==null && d>=0 && d<=30; });
+  const pendingProc = state.procurement.filter(x=>x.status!=='Received');
+  const notApprovedVendors = state.vendors.filter(x=>x.status!=='Approved');
+
+  const html = `
+  <div class="grid grid-4">
+    <div class="card kpi" style="grid-column:span 1;display:flex;align-items:center;gap:14px;">
+      <div class="readiness-ring">${ringSvg(r.overall,74,8,ringColor)}<div class="rlabel">${r.overall}%</div></div>
+      <div><div class="label">Overall readiness</div><div class="foot">Auto-calculated from live data</div></div>
+    </div>
+    <div class="card kpi"><div class="label">Equipment valid</div><div class="value">${r.eqValid}/${r.eqTotal}</div><div class="foot">${overdueEq.length} overdue · ${dueSoonEq.length} due within 30d</div></div>
+    <div class="card kpi"><div class="label">Training completion</div><div class="value">${Math.round(r.trainScore*100)}%</div><div class="foot">${state.trainings.length} module(s) active</div></div>
+    <div class="card kpi"><div class="label">Vendors approved</div><div class="value">${Math.round(r.vScore*100)}%</div><div class="foot">${notApprovedVendors.length} not yet approved</div></div>
+  </div>
+
+  <div class="grid grid-4" style="margin-top:14px;">
+    <div class="card kpi"><div class="label">Documents current</div><div class="value">${Math.round(r.docScore*100)}%</div><div class="foot">${state.documents.length} controlled document(s)</div></div>
+    <div class="card kpi"><div class="label">Risks on track</div><div class="value">${Math.round(r.riskScore*100)}%</div><div class="foot">${state.risks.length} risk(s) logged</div></div>
+    <div class="card kpi"><div class="label">NCR / CAPA health</div><div class="value">${Math.round(r.ncrScore*100)}%</div><div class="foot">${state.ncrs.filter(n=>n.status!=='Closed').length} open</div></div>
+    <div class="card kpi"><div class="label">NABL library</div><div class="value">${Math.round(r.nlScore*100)}%</div><div class="foot">${state.nabldocs.filter(d=>d.status==='Uploaded').length}/${state.nabldocs.length} uploaded</div></div>
+  </div>
+
+  <div class="grid grid-4" style="margin-top:14px;">
+    <div class="card kpi"><div class="label">Competency valid</div><div class="value">${Math.round(r.compScore*100)}%</div><div class="foot">${state.competency.length} authorization(s) on file</div></div>
+    <div class="card kpi"><div class="label">Traceability current</div><div class="value">${Math.round(r.crmScore*100)}%</div><div class="foot">${state.crm.length} CRM/standard(s) tracked</div></div>
+    <div class="card kpi"><div class="label">Environment in range</div><div class="value">${Math.round(r.envScore*100)}%</div><div class="foot">last ${Math.min(20,state.envlogs.length)} readings</div></div>
+    <div class="card kpi"><div class="label">Reports issuable</div><div class="value">${Math.round(r.reportScore*100)}%</div><div class="foot">${r.reportsBlocked} blocked from issuance</div></div>
+  </div>
+
+  <div class="section-head"><h2>Needs attention</h2><button class="btn btn-sm" onclick="showView('alerts')">Open alerts center →</button></div>
+  <div class="grid grid-2">
+    <div class="card">
+      <div style="font-weight:600;font-size:13px;margin-bottom:10px;">Calibration overdue / due soon</div>
+      ${ overdueEq.concat(dueSoonEq).length===0 ? '<div class="muted small">Nothing overdue. Equipment register is current.</div>' :
+        overdueEq.concat(dueSoonEq).slice(0,6).map(e=>{
+          const d = daysUntil(e.nextDue);
+          const chip = d<0 ? '<span class="chip chip-red">Overdue '+Math.abs(d)+'d</span>' : '<span class="chip chip-amber">Due in '+d+'d</span>';
+          return '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;"><span>'+esc(e.name)+' <span class="muted mono">('+esc(e.assetId)+')</span></span>'+chip+'</div>';
+        }).join('')
+      }
+    </div>
+    <div class="card">
+      <div style="font-weight:600;font-size:13px;margin-bottom:10px;">Procurement pending</div>
+      ${ pendingProc.length===0 ? '<div class="muted small">No open procurement requests.</div>' :
+        pendingProc.slice(0,6).map(p=>'<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;"><span>'+esc(p.item)+'</span><span class="chip chip-grey">'+esc(p.status)+'</span></div>').join('')
+      }
+    </div>
+  </div>
+
+  <div class="grid grid-2" style="margin-top:14px;">
+    <div class="card">
+      <div style="font-weight:600;font-size:13px;margin-bottom:10px;">Open NCRs</div>
+      ${ state.ncrs.filter(n=>n.status!=='Closed').length===0 ? '<div class="muted small">No open nonconformances.</div>' :
+        state.ncrs.filter(n=>n.status!=='Closed').slice(0,6).map(n=>'<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;"><span>'+esc(n.title)+' <span class="muted small">('+esc(n.clause||'—')+')</span></span><span class="chip chip-amber">'+esc(n.status)+'</span></div>').join('')
+      }
+    </div>
+    <div class="card">
+      <div style="font-weight:600;font-size:13px;margin-bottom:10px;">Document reviews due</div>
+      ${ state.documents.filter(d=>(daysUntil(d.reviewDate)??999)<=30).length===0 ? '<div class="muted small">No documents due for review.</div>' :
+        state.documents.filter(d=>(daysUntil(d.reviewDate)??999)<=30).slice(0,6).map(d=>{
+          const dd = daysUntil(d.reviewDate); const chip = dd<0?'<span class="chip chip-red">Overdue</span>':'<span class="chip chip-amber">Due in '+dd+'d</span>';
+          return '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;"><span>'+esc(d.title)+' <span class="mono muted">v'+esc(d.version)+'</span></span>'+chip+'</div>';
+        }).join('')
+      }
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Module snapshot</h2></div>
+  <div class="grid grid-3">
+    <div class="card"><div class="label" style="font-size:11.5px;color:var(--ink-3);font-weight:600;text-transform:uppercase;">Training</div>
+      <div style="margin-top:8px;font-size:13px;">${state.trainings.length} module(s) · ${state.staff.length} staff on record</div>
+      <button class="btn btn-sm" style="margin-top:10px;" onclick="showView('training')">Open training →</button></div>
+    <div class="card"><div class="label" style="font-size:11.5px;color:var(--ink-3);font-weight:600;text-transform:uppercase;">Equipment</div>
+      <div style="margin-top:8px;font-size:13px;">${state.equipment.length} asset(s) tracked</div>
+      <button class="btn btn-sm" style="margin-top:10px;" onclick="showView('equipment')">Open equipment →</button></div>
+    <div class="card"><div class="label" style="font-size:11.5px;color:var(--ink-3);font-weight:600;text-transform:uppercase;">Vendors</div>
+      <div style="margin-top:8px;font-size:13px;">${state.vendors.length} vendor(s) on register</div>
+      <button class="btn btn-sm" style="margin-top:10px;" onclick="showView('vendor')">Open vendors →</button></div>
+  </div>
+  `;
+  document.getElementById('view-dashboard').innerHTML = html;
+}
+/* ============ TRAINING ============ */
+function trainingCompletionRate(t){
+  const assigned = t.assignedStaff||[];
+  if(!assigned.length) return null;
+  const done = assigned.filter(n=>t.completions && t.completions[n]).length;
+  return Math.round((done/assigned.length)*100);
+}
+function renderTraining(){
+  const rows = state.trainings.map(t=>{
+    const rate = trainingCompletionRate(t);
+    const due = daysUntil(t.dueDate);
+    const dueChip = t.dueDate ? (due<0 ? '<span class="chip chip-red">Past due</span>' : due<=7 ? '<span class="chip chip-amber">Due in '+due+'d</span>' : '<span class="chip chip-grey">Due '+fmtDate(t.dueDate)+'</span>') : '<span class="chip chip-grey">No due date</span>';
+    return '<tr>'+
+      '<td><div style="font-weight:600;">'+esc(t.title)+'</div><div class="muted small">'+esc(t.category||'General')+'</div></td>'+
+      '<td>'+(t.assignedStaff||[]).length+' assigned</td>'+
+      '<td style="width:140px;">'+ (rate===null ? '<span class="muted small">Not assigned</span>' : '<div class="bar"><div class="bar-fill" style="width:'+rate+'%;"></div></div><div class="small muted" style="margin-top:3px;">'+rate+'% complete</div>') +'</td>'+
+      '<td>'+dueChip+'</td>'+
+      '<td style="white-space:nowrap;">'+
+        '<button class="btn btn-sm" onclick="openAssignTraining(\''+t.id+'\')">Assign</button> '+
+        '<button class="btn btn-sm" onclick="openSendLink(\''+t.id+'\')">Send link</button> '+
+        '<button class="icon-btn" title="Edit" onclick="openTrainingForm(\''+t.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncTrainingToDrive(\''+t.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteTraining(\''+t.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-training').innerHTML = `
+    <div class="section-head"><h2>Training modules</h2>
+      <button class="btn btn-primary" onclick="openTrainingForm()">+ New training module</button></div>
+    <table><thead><tr><th>Module</th><th>Assigned</th><th>Completion</th><th>Due</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="5">No training modules yet. Create one to assign to staff.</td></tr>'}</tbody></table>
+    <div class="sync-note">"Send link" prepares an email to assigned staff. Staff open the shared dashboard link, use "Staff sign-in view", and complete the module and quiz there — completion is recorded automatically.</div>
+  `;
+}
+
+function openTrainingForm(id){
+  const t = id ? state.trainings.find(x=>x.id===id) : { id:null, title:'', category:'Method-specific', material:'', dueDate:'', quiz:[], assignedStaff:[], completions:{} };
+  window._quizDraft = JSON.parse(JSON.stringify(t.quiz||[]));
+  openModal(`
+    <h3>${id?'Edit':'New'} training module</h3>
+    <div class="modal-sub">Cl. 6.2 — competence, training and awareness records</div>
+    <div class="field"><label>Title</label><input id="f-title" value="${esc(t.title)}" placeholder="e.g. GCV determination by bomb calorimeter"></div>
+    <div id="err-title" class="err"></div>
+    <div class="field-row">
+      <div class="field"><label>Category</label>
+        <select id="f-cat">
+          ${['Induction','Method-specific','Safety','QMS / ISO 17025','Calibration awareness','Equipment operation'].map(c=>'<option '+(t.category===c?'selected':'')+'>'+c+'</option>').join('')}
+        </select>
+      </div>
+      <div class="field"><label>Due date</label><input type="date" id="f-due" value="${t.dueDate||''}"></div>
+    </div>
+    <div class="field"><label>Training material / notes</label><textarea id="f-mat" rows="4" placeholder="Key points, SOP reference, method reference...">${esc(t.material)}</textarea></div>
+
+    <div class="field">
+      <label>Quiz (optional — shown to staff after they read the material)</label>
+      <div id="quizList"></div>
+      <button type="button" class="btn btn-sm" onclick="addQuizQ()">+ Add question</button>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTraining('${t.id||''}')">Save module</button>
+    </div>
+  `);
+  renderQuizBuilder();
+}
+function renderQuizBuilder(){
+  const el = document.getElementById('quizList');
+  if(!el) return;
+  el.innerHTML = (window._quizDraft||[]).map((q,i)=>`
+    <div class="q-row">
+      <div style="display:flex;justify-content:space-between;"><strong class="small">Q${i+1}</strong><button type="button" class="icon-btn" onclick="removeQuizQ(${i})">✕</button></div>
+      <input type="text" placeholder="Question text" value="${esc(q.q)}" oninput="window._quizDraft[${i}].q=this.value">
+      ${[0,1,2,3].map(oi=>`<div class="opt-row">
+        <input type="radio" name="correct${i}" ${q.correct===oi?'checked':''} onchange="window._quizDraft[${i}].correct=${oi}">
+        <input type="text" placeholder="Option ${oi+1}" value="${esc(q.options[oi]||'')}" oninput="window._quizDraft[${i}].options[${oi}]=this.value">
+      </div>`).join('')}
+    </div>
+  `).join('') || '<div class="muted small">No questions added — training will not require a quiz.</div>';
+}
+function addQuizQ(){
+  window._quizDraft = window._quizDraft || [];
+  if(window._quizDraft.length>=6){ toast('Max 6 questions per module','err'); return; }
+  window._quizDraft.push({ q:'', options:['','','',''], correct:0 });
+  renderQuizBuilder();
+}
+function removeQuizQ(i){ window._quizDraft.splice(i,1); renderQuizBuilder(); }
+
+async function saveTraining(id){
+  const title = document.getElementById('f-title').value.trim();
+  if(!title){ showFieldError('err-title','Enter a title for this module'); return; }
+  const cat = document.getElementById('f-cat').value;
+  const due = document.getElementById('f-due').value;
+  const mat = document.getElementById('f-mat').value.trim();
+  const quiz = (window._quizDraft||[]).filter(q=>q.q.trim() && q.options.every(o=>o.trim()));
+  if(id){
+    const t = state.trainings.find(x=>x.id===id);
+    Object.assign(t, {title, category:cat, dueDate:due, material:mat, quiz});
+  } else {
+    state.trainings.push({ id:uid(), title, category:cat, dueDate:due, material:mat, quiz, assignedStaff:[], completions:{}, createdAt:todayStr() });
+  }
+  const ok = await saveKey('trainings');
+  if(ok){ closeModal(); toast('Training module saved','ok'); renderTraining(); renderDashboard(); }
+}
+async function deleteTraining(id){
+  if(!confirm('Delete this training module? This cannot be undone.')) return;
+  state.trainings = state.trainings.filter(x=>x.id!==id);
+  await saveKey('trainings'); renderTraining(); renderDashboard();
+}
+
+function openAssignTraining(id){
+  const t = state.trainings.find(x=>x.id===id);
+  const names = state.staff.map(s=>s.name);
+  openModal(`
+    <h3>Assign — ${esc(t.title)}</h3>
+    <div class="modal-sub">Select staff to assign this training to. Add people first in Staff directory if the list is empty.</div>
+    <div class="field">
+      ${ names.length ? names.map(n=>`<label style="display:flex;align-items:center;gap:8px;font-weight:400;padding:5px 0;">
+          <input type="checkbox" value="${esc(n)}" ${ (t.assignedStaff||[]).includes(n) ? 'checked':'' } class="assign-cb"> ${esc(n)}
+        </label>`).join('') : '<div class="muted small">No staff on record yet. <a href="#" onclick="closeModal();showView(\'staffdir\')">Add staff →</a></div>' }
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveAssign('${id}')">Save assignment</button>
+    </div>
+  `);
+}
+async function saveAssign(id){
+  const t = state.trainings.find(x=>x.id===id);
+  const checked = Array.from(document.querySelectorAll('.assign-cb:checked')).map(c=>c.value);
+  t.assignedStaff = checked;
+  const ok = await saveKey('trainings');
+  if(ok){ closeModal(); toast('Assignment updated','ok'); renderTraining(); renderDashboard(); }
+}
+
+function openSendLink(id){
+  const t = state.trainings.find(x=>x.id===id);
+  const staffEmails = state.staff.filter(s=>(t.assignedStaff||[]).includes(s.name) && s.email).map(s=>s.email);
+  const subject = encodeURIComponent('NABL LIMS training assigned: ' + t.title);
+  const body = encodeURIComponent(
+    'You have been assigned a training module in the Coal Testing Laboratory LIMS.\n\n' +
+    'Module: ' + t.title + '\n' +
+    'Category: ' + (t.category||'General') + '\n' +
+    (t.dueDate ? ('Due date: ' + fmtDate(t.dueDate) + '\n') : '') +
+    '\nTo complete it:\n' +
+    '1. Open the shared LIMS dashboard link (ask your Quality Manager if you do not have it).\n' +
+    '2. Click "Staff sign-in view" in the left sidebar and enter your name.\n' +
+    '3. Open "' + t.title + '" under your assigned trainings, read the material, and submit the quiz if one is attached.\n\n' +
+    'Your completion is recorded automatically once submitted.'
+  );
+  const mailto = 'mailto:' + staffEmails.join(',') + '?subject=' + subject + '&body=' + body;
+  openModal(`
+    <h3>Send training link</h3>
+    <div class="modal-sub">${esc(t.title)} — ${(t.assignedStaff||[]).length} staff assigned${staffEmails.length? '' : ' (add staff emails in Staff directory to prefill recipients)'}</div>
+    <div class="field"><label>Email preview</label>
+      <textarea rows="9" readonly>${decodeURIComponent(body)}</textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="copyToClipboard(${JSON.stringify(decodeURIComponent(body))})">Copy text</button>
+      <a class="btn btn-primary" href="${mailto}">Open in email app</a>
+    </div>
+  `);
+}
+
+async function syncTrainingToDrive(id){
+  const t = state.trainings.find(x=>x.id===id);
+  const payload = { type:'training_module', title:t.title, category:t.category, dueDate:t.dueDate, material:t.material,
+    quiz:t.quiz, assignedStaff:t.assignedStaff, completions:t.completions, exportedAt:new Date().toISOString() };
+  sendToClaudeForDriveSync('Training_Records', 'Training_'+slug(t.title)+'_'+todayStr()+'.json', payload);
+}
+function slug(s){ return (s||'file').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'').slice(0,40) || 'file'; }
+/* ============ EQUIPMENT ============ */
+function equipStatus(e){
+  const d = daysUntil(e.nextDue);
+  if(e.outOfService) return {label:'Out of service', chip:'chip-grey'};
+  if(d===null) return {label:'No date set', chip:'chip-grey'};
+  if(d<0) return {label:'Overdue '+Math.abs(d)+'d', chip:'chip-red'};
+  if(d<=30) return {label:'Due in '+d+'d', chip:'chip-amber'};
+  return {label:'Valid', chip:'chip-teal'};
+}
+function renderEquipment(){
+  const rows = state.equipment.map(e=>{
+    const s = equipStatus(e);
+    return '<tr>'+
+      '<td class="mono">'+esc(e.assetId)+'</td>'+
+      '<td><div style="font-weight:600;">'+esc(e.name)+'</div><div class="muted small">'+esc(e.location||'—')+'</div></td>'+
+      '<td>'+fmtDate(e.lastCal)+'</td>'+
+      '<td>'+fmtDate(e.nextDue)+'</td>'+
+      '<td><span class="chip '+s.chip+'">'+s.label+'</span></td>'+
+      '<td style="white-space:nowrap;">'+
+        '<button class="icon-btn" title="History" onclick="openEquipHistory(\''+e.id+'\')">☰</button>'+
+        '<button class="icon-btn" title="Edit" onclick="openEquipForm(\''+e.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="Sync record to Drive" onclick="syncEquipToDrive(\''+e.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteEquip(\''+e.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-equipment').innerHTML = `
+    <div class="section-head"><h2>Equipment & calibration register</h2>
+      <button class="btn btn-primary" onclick="openEquipForm()">+ Add equipment</button></div>
+    <table><thead><tr><th>Asset ID</th><th>Equipment</th><th>Last calibration</th><th>Next due</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="6">No equipment on register yet.</td></tr>'}</tbody></table>
+    <div class="sync-note">Cl. 6.4 / 6.5 — calibration certificates (PDF/scan) should be dropped directly into the
+      <a class="folder-link" href="https://drive.google.com/drive/folders/${DRIVE_FOLDERS.calibration}" target="_blank">Calibration_Certificates</a> Drive folder, named with the asset ID. The ☁ button here syncs the record's metadata (dates, status, history) — not the certificate file itself.</div>
+  `;
+}
+function openEquipForm(id){
+  const existing = id ? state.equipment.find(x=>x.id===id) : null;
+  const e = existing || { id:uid(), assetId:'', name:'', location:'', agency:'', lastCal:'', nextDue:'', interval:12, outOfService:false, history:[] };
+  openModal(`
+    <h3>${existing?'Edit':'Add'} equipment</h3>
+    <div class="modal-sub">Cl. 6.4 — equipment and metrological traceability</div>
+    <div class="field-row">
+      <div class="field"><label>Asset / serial ID</label><input id="f-aid" value="${esc(e.assetId)}" placeholder="e.g. NTPC-CTL-BC-01"></div>
+      <div class="field"><label>Equipment name</label><input id="f-name" value="${esc(e.name)}" placeholder="e.g. Bomb calorimeter"></div>
+    </div>
+    <div id="err-name" class="err"></div>
+    <div class="field-row">
+      <div class="field"><label>Location</label><input id="f-loc" value="${esc(e.location)}" placeholder="e.g. Coal analysis bay"></div>
+      <div class="field"><label>Calibration agency</label><input id="f-agency" value="${esc(e.agency)}" placeholder="e.g. NPL-traceable vendor"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Last calibration date</label><input type="date" id="f-lastcal" value="${e.lastCal||''}" onchange="autoNextDue()"></div>
+      <div class="field"><label>Interval (months)</label><input type="number" id="f-interval" value="${e.interval||12}" min="1" onchange="autoNextDue()"></div>
+    </div>
+    <div class="field"><label>Next due date</label><input type="date" id="f-nextdue" value="${e.nextDue||''}"></div>
+    <div class="field"><label style="display:flex;align-items:center;gap:8px;font-weight:400;"><input type="checkbox" id="f-oos" ${e.outOfService?'checked':''} style="width:auto;"> Mark out of service (excluded from sample-testing selection)</label></div>
+    ${fileFieldHtml(e.id, 'Attach calibration certificate (PDF, max 4MB)')}
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEquip('${e.id}')">Save equipment</button>
+    </div>
+  `);
+  refreshFileArea(e.id);
+}
+function autoNextDue(){
+  const last = document.getElementById('f-lastcal').value;
+  const interval = parseInt(document.getElementById('f-interval').value||'12',10);
+  if(last){
+    const d = new Date(last+'T00:00:00'); d.setMonth(d.getMonth()+interval);
+    document.getElementById('f-nextdue').value = d.toISOString().slice(0,10);
+  }
+}
+async function saveEquip(id){
+  const name = document.getElementById('f-name').value.trim();
+  if(!name){ showFieldError('err-name','Enter an equipment name'); return; }
+  const data = {
+    assetId: document.getElementById('f-aid').value.trim() || 'UNASSIGNED',
+    name, location: document.getElementById('f-loc').value.trim(),
+    agency: document.getElementById('f-agency').value.trim(),
+    lastCal: document.getElementById('f-lastcal').value, nextDue: document.getElementById('f-nextdue').value,
+    interval: parseInt(document.getElementById('f-interval').value||'12',10),
+    outOfService: document.getElementById('f-oos').checked,
+  };
+  const existing = state.equipment.find(x=>x.id===id);
+  if(existing){ Object.assign(existing, data); }
+  else{ state.equipment.push({ id, ...data, history:[], createdAt:todayStr() }); }
+  const ok = await saveKey('equipment');
+  if(ok){ closeModal(); toast('Equipment saved','ok'); renderEquipment(); renderDashboard(); }
+}
+async function deleteEquip(id){
+  if(!confirm('Remove this equipment from the register?')) return;
+  state.equipment = state.equipment.filter(x=>x.id!==id);
+  await saveKey('equipment'); renderEquipment(); renderDashboard();
+}
+function openEquipHistory(id){
+  const e = state.equipment.find(x=>x.id===id);
+  openModal(`
+    <h3>History — ${esc(e.name)}</h3>
+    <div class="modal-sub mono">${esc(e.assetId)}</div>
+    <div id="histList">${renderHistList(e)}</div>
+    <div class="field-row" style="margin-top:10px;">
+      <div class="field"><label>Date</label><input type="date" id="f-hdate" value="${todayStr()}"></div>
+      <div class="field"><label>Type</label><select id="f-htype"><option>Maintenance</option><option>Breakdown</option><option>Verification</option><option>Note</option></select></div>
+    </div>
+    <div class="field"><label>Note</label><input id="f-hnote" placeholder="What was done"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Close</button>
+      <button class="btn btn-primary" onclick="addHistory('${id}')">Add entry</button>
+    </div>
+  `);
+}
+function renderHistList(e){
+  const h = (e.history||[]).slice().reverse();
+  if(!h.length) return '<div class="muted small">No history entries yet.</div>';
+  return h.map(x=>'<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;"><span class="mono muted">'+fmtDate(x.date)+'</span> — <strong>'+esc(x.type)+'</strong> — '+esc(x.note)+'</div>').join('');
+}
+async function addHistory(id){
+  const e = state.equipment.find(x=>x.id===id);
+  const note = document.getElementById('f-hnote').value.trim();
+  if(!note){ toast('Enter a note first','err'); return; }
+  e.history = e.history || [];
+  e.history.push({ date:document.getElementById('f-hdate').value, type:document.getElementById('f-htype').value, note });
+  await saveKey('equipment');
+  document.getElementById('histList').innerHTML = renderHistList(e);
+  document.getElementById('f-hnote').value='';
+  toast('History entry added','ok');
+}
+async function syncEquipToDrive(id){
+  const e = state.equipment.find(x=>x.id===id);
+  const payload = { type:'equipment_record', assetId:e.assetId, name:e.name, location:e.location, agency:e.agency,
+    lastCal:e.lastCal, nextDue:e.nextDue, interval:e.interval, outOfService:e.outOfService, history:e.history, status:equipStatus(e).label, exportedAt:new Date().toISOString() };
+  sendToClaudeForDriveSync('Calibration_Certificates', 'Equipment_'+slug(e.assetId)+'_'+todayStr()+'.json', payload);
+}
+/* ============ VENDOR EVALUATION ============ */
+function vendorScore(v){
+  const w = { quality:0.35, delivery:0.25, compliance:0.25, pricing:0.15 };
+  return (v.quality*w.quality + v.delivery*w.delivery + v.compliance*w.compliance + v.pricing*w.pricing);
+}
+function vendorStatus(score){
+  if(score>=4) return 'Approved';
+  if(score>=3) return 'Conditional';
+  return 'Not approved';
+}
+function statusChipClass(s){ return s==='Approved'?'chip-teal': s==='Conditional'?'chip-amber':'chip-red'; }
+function renderVendor(){
+  const rows = state.vendors.map(v=>{
+    const score = vendorScore(v).toFixed(2);
+    const status = vendorStatus(vendorScore(v));
+    return '<tr>'+
+      '<td><div style="font-weight:600;">'+esc(v.name)+'</div><div class="muted small">'+esc(v.category)+'</div></td>'+
+      '<td class="mono">'+score+' / 5</td>'+
+      '<td><span class="chip '+statusChipClass(status)+'">'+status+'</span></td>'+
+      '<td>'+fmtDate(v.lastEval)+'</td>'+
+      '<td style="white-space:nowrap;">'+
+        '<button class="icon-btn" title="Edit" onclick="openVendorForm(\''+v.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncVendorToDrive(\''+v.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteVendor(\''+v.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-vendor').innerHTML = `
+    <div class="section-head"><h2>Vendor / external provider evaluation</h2>
+      <button class="btn btn-primary" onclick="openVendorForm()">+ Add vendor</button></div>
+    <table><thead><tr><th>Vendor</th><th>Weighted score</th><th>Status</th><th>Last evaluated</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="5">No vendors on register yet.</td></tr>'}</tbody></table>
+    <div class="sync-note">Cl. 6.6 — external providers of products and services. Score weights: quality 35%, delivery 25%, compliance 25%, pricing 15%. ≥4.0 Approved, ≥3.0 Conditional, below Not approved.</div>
+  `;
+}
+function openVendorForm(id){
+  const v = id ? state.vendors.find(x=>x.id===id) : { id:null, name:'', category:'CRM / reference material supplier', quality:3, delivery:3, compliance:3, pricing:3, lastEval:todayStr(), notes:'' };
+  openModal(`
+    <h3>${id?'Edit':'Add'} vendor</h3>
+    <div class="modal-sub">Cl. 6.6 — evaluation, selection and monitoring of external providers</div>
+    <div class="field"><label>Vendor name</label><input id="f-vname" value="${esc(v.name)}" placeholder="e.g. XYZ Calibration Services"></div>
+    <div id="err-vname" class="err"></div>
+    <div class="field"><label>Category</label>
+      <select id="f-vcat">
+        ${['CRM / reference material supplier','Calibration agency','Equipment supplier','Reagent / consumables supplier','Subcontracted testing laboratory','Proficiency testing provider'].map(c=>'<option '+(v.category===c?'selected':'')+'>'+c+'</option>').join('')}
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Quality (1-5)</label><input type="number" id="f-vq" min="1" max="5" value="${v.quality}"></div>
+      <div class="field"><label>Delivery (1-5)</label><input type="number" id="f-vd" min="1" max="5" value="${v.delivery}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Compliance (1-5)</label><input type="number" id="f-vc" min="1" max="5" value="${v.compliance}"></div>
+      <div class="field"><label>Pricing (1-5)</label><input type="number" id="f-vp" min="1" max="5" value="${v.pricing}"></div>
+    </div>
+    <div class="field"><label>Evaluation date</label><input type="date" id="f-vdate" value="${v.lastEval||todayStr()}"></div>
+    <div class="field"><label>Notes</label><textarea id="f-vnotes" rows="2">${esc(v.notes)}</textarea></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveVendor('${v.id||''}')">Save vendor</button>
+    </div>
+  `);
+}
+async function saveVendor(id){
+  const name = document.getElementById('f-vname').value.trim();
+  if(!name){ showFieldError('err-vname','Enter a vendor name'); return; }
+  const clamp = v => Math.max(1, Math.min(5, parseFloat(v)||1));
+  const data = { name, category: document.getElementById('f-vcat').value,
+    quality: clamp(document.getElementById('f-vq').value), delivery: clamp(document.getElementById('f-vd').value),
+    compliance: clamp(document.getElementById('f-vc').value), pricing: clamp(document.getElementById('f-vp').value),
+    lastEval: document.getElementById('f-vdate').value, notes: document.getElementById('f-vnotes').value.trim() };
+  if(id){ Object.assign(state.vendors.find(x=>x.id===id), data); }
+  else{ state.vendors.push({ id:uid(), ...data, createdAt:todayStr() }); }
+  const ok = await saveKey('vendors');
+  if(ok){ closeModal(); toast('Vendor saved','ok'); renderVendor(); renderDashboard(); }
+}
+async function deleteVendor(id){
+  if(!confirm('Remove this vendor from the register?')) return;
+  state.vendors = state.vendors.filter(x=>x.id!==id);
+  await saveKey('vendors'); renderVendor(); renderDashboard();
+}
+async function syncVendorToDrive(id){
+  const v = state.vendors.find(x=>x.id===id);
+  const payload = { type:'vendor_evaluation', name:v.name, category:v.category, scores:{quality:v.quality,delivery:v.delivery,compliance:v.compliance,pricing:v.pricing},
+    weightedScore: vendorScore(v).toFixed(2), status: vendorStatus(vendorScore(v)), lastEval:v.lastEval, notes:v.notes, exportedAt:new Date().toISOString() };
+  sendToClaudeForDriveSync('Vendor_Evaluation', 'Vendor_'+slug(v.name)+'_'+todayStr()+'.json', payload);
+}
+
+/* ============ PROCUREMENT ============ */
+const PROC_STATUSES = ['Requested','Approved','Ordered','Received'];
+function renderProcurement(){
+  const rows = state.procurement.map(p=>{
+    const idx = PROC_STATUSES.indexOf(p.status);
+    const nextStatus = PROC_STATUSES[idx+1];
+    const overdue = p.status!=='Received' && todayDiff(p.requestDate) > 21;
+    return '<tr>'+
+      '<td><div style="font-weight:600;">'+esc(p.item)+'</div><div class="muted small">Req. by '+esc(p.requestedBy||'—')+'</div></td>'+
+      '<td>'+esc(p.vendor||'—')+'</td>'+
+      '<td>'+fmtDate(p.requestDate)+(overdue?' <span class="chip chip-red">Stalled</span>':'')+'</td>'+
+      '<td class="mono">'+(p.amount? '₹'+Number(p.amount).toLocaleString('en-IN') : '—')+'</td>'+
+      '<td><span class="chip chip-grey">'+p.status+'</span></td>'+
+      '<td style="white-space:nowrap;">'+
+        (nextStatus? '<button class="btn btn-sm" onclick="advanceProc(\''+p.id+'\')">Mark '+nextStatus+'</button> ':'')+
+        '<button class="icon-btn" title="Edit" onclick="openProcForm(\''+p.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncProcToDrive(\''+p.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteProc(\''+p.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-procurement').innerHTML = `
+    <div class="section-head"><h2>Procurement register</h2>
+      <button class="btn btn-primary" onclick="openProcForm()">+ New request</button></div>
+    <table><thead><tr><th>Item</th><th>Vendor</th><th>Requested</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="6">No procurement requests logged yet.</td></tr>'}</tbody></table>
+  `;
+}
+function openProcForm(id){
+  const p = id ? state.procurement.find(x=>x.id===id) : { id:null, item:'', vendor:'', requestedBy:'', requestDate:todayStr(), amount:'', status:'Requested', linkedEquipment:'' };
+  const vendorOptions = state.vendors.map(v=>v.name);
+  const equipOptions = state.equipment.map(e=>e.name);
+  openModal(`
+    <h3>${id?'Edit':'New'} procurement request</h3>
+    <div class="field"><label>Item / description</label><input id="f-pitem" value="${esc(p.item)}" placeholder="e.g. CRM coal sample, calorimeter service kit"></div>
+    <div id="err-pitem" class="err"></div>
+    <div class="field-row">
+      <div class="field"><label>Vendor</label><input id="f-pvendor" list="vendorList" value="${esc(p.vendor)}"><datalist id="vendorList">${vendorOptions.map(v=>'<option value="'+esc(v)+'">').join('')}</datalist></div>
+      <div class="field"><label>Requested by</label><input id="f-preqby" value="${esc(p.requestedBy)}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Request date</label><input type="date" id="f-pdate" value="${p.requestDate}"></div>
+      <div class="field"><label>Amount (₹)</label><input type="number" id="f-pamt" value="${p.amount}"></div>
+    </div>
+    <div class="field"><label>Linked equipment (optional)</label><input id="f-pequip" list="equipList" value="${esc(p.linkedEquipment)}"><datalist id="equipList">${equipOptions.map(v=>'<option value="'+esc(v)+'">').join('')}</datalist></div>
+    <div class="field"><label>Status</label><select id="f-pstatus">${PROC_STATUSES.map(s=>'<option '+(p.status===s?'selected':'')+'>'+s+'</option>').join('')}</select></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProc('${p.id||''}')">Save request</button>
+    </div>
+  `);
+}
+async function saveProc(id){
+  const item = document.getElementById('f-pitem').value.trim();
+  if(!item){ showFieldError('err-pitem','Enter an item description'); return; }
+  const data = { item, vendor: document.getElementById('f-pvendor').value.trim(), requestedBy: document.getElementById('f-preqby').value.trim(),
+    requestDate: document.getElementById('f-pdate').value, amount: document.getElementById('f-pamt').value,
+    linkedEquipment: document.getElementById('f-pequip').value.trim(), status: document.getElementById('f-pstatus').value };
+  if(id){ Object.assign(state.procurement.find(x=>x.id===id), data); }
+  else{ state.procurement.push({ id:uid(), ...data, createdAt:todayStr() }); }
+  const ok = await saveKey('procurement');
+  if(ok){ closeModal(); toast('Procurement request saved','ok'); renderProcurement(); renderDashboard(); }
+}
+async function advanceProc(id){
+  const p = state.procurement.find(x=>x.id===id);
+  const idx = PROC_STATUSES.indexOf(p.status);
+  if(idx < PROC_STATUSES.length-1){ p.status = PROC_STATUSES[idx+1]; await saveKey('procurement'); renderProcurement(); renderDashboard(); toast('Status updated to '+p.status,'ok'); }
+}
+async function deleteProc(id){
+  if(!confirm('Remove this procurement request?')) return;
+  state.procurement = state.procurement.filter(x=>x.id!==id);
+  await saveKey('procurement'); renderProcurement(); renderDashboard();
+}
+async function syncProcToDrive(id){
+  const p = state.procurement.find(x=>x.id===id);
+  const payload = { type:'procurement_request', item:p.item, vendor:p.vendor, requestedBy:p.requestedBy, requestDate:p.requestDate,
+    amount:p.amount, linkedEquipment:p.linkedEquipment, status:p.status, exportedAt:new Date().toISOString() };
+  sendToClaudeForDriveSync('Procurement', 'Procurement_'+slug(p.item)+'_'+todayStr()+'.json', payload);
+}
+/* ============ STAFF DIRECTORY ============ */
+function renderStaffDir(){
+  const rows = state.staff.map(s=>'<tr>'+
+    '<td style="font-weight:600;">'+esc(s.name)+'</td><td>'+esc(s.role||'—')+'</td><td>'+esc(s.email||'—')+'</td>'+
+    '<td style="white-space:nowrap;"><button class="icon-btn" title="Edit" onclick="openStaffForm(\''+s.id+'\')">✎</button>'+
+    '<button class="icon-btn" title="Delete" onclick="deleteStaff(\''+s.id+'\')">✕</button></td></tr>').join('');
+  document.getElementById('view-staffdir').innerHTML = `
+    <div class="section-head"><h2>Staff directory</h2>
+      <button class="btn btn-primary" onclick="openStaffForm()">+ Add staff</button></div>
+    <table><thead><tr><th>Name</th><th>Role</th><th>Email</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="4">No staff added yet. Add staff so they can be assigned trainings.</td></tr>'}</tbody></table>
+  `;
+}
+function openStaffForm(id){
+  const s = id ? state.staff.find(x=>x.id===id) : { id:null, name:'', role:'Analyst', email:'' };
+  openModal(`
+    <h3>${id?'Edit':'Add'} staff member</h3>
+    <div class="field"><label>Name</label><input id="f-sname" value="${esc(s.name)}"></div>
+    <div id="err-sname" class="err"></div>
+    <div class="field"><label>Role</label>
+      <select id="f-srole">${['Analyst','Technical Reviewer','Authorised Signatory','Quality Manager','Lab In-charge'].map(r=>'<option '+(s.role===r?'selected':'')+'>'+r+'</option>').join('')}</select>
+    </div>
+    <div class="field"><label>Email</label><input id="f-semail" value="${esc(s.email)}" placeholder="name@ntpc.co.in"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveStaff('${s.id||''}')">Save</button>
+    </div>
+  `);
+}
+async function saveStaff(id){
+  const name = document.getElementById('f-sname').value.trim();
+  if(!name){ showFieldError('err-sname','Enter a name'); return; }
+  const data = { name, role: document.getElementById('f-srole').value, email: document.getElementById('f-semail').value.trim() };
+  if(id){ Object.assign(state.staff.find(x=>x.id===id), data); }
+  else{ state.staff.push({ id:uid(), ...data }); }
+  const ok = await saveKey('staff');
+  if(ok){ closeModal(); toast('Staff saved','ok'); renderStaffDir(); }
+}
+async function deleteStaff(id){
+  if(!confirm('Remove this staff member?')) return;
+  state.staff = state.staff.filter(x=>x.id!==id);
+  await saveKey('staff'); renderStaffDir();
+}
+
+/* ============ STAFF VIEW MODE ============ */
+function enterStaffView(){
+  const name = prompt('Enter your name as it appears in the Staff directory:');
+  if(!name) return;
+  const match = state.staff.find(s=>s.name.toLowerCase()===name.trim().toLowerCase());
+  if(!match){ toast('Name not found in Staff directory — ask your Quality Manager to add you','err'); return; }
+  staffSession = match.name;
+  document.getElementById('staffBanner').classList.remove('hidden');
+  document.getElementById('staffNameLabel').textContent = staffSession;
+  document.querySelector('.sidebar').style.display = 'none';
+  document.getElementById('crumb').textContent = 'STAFF VIEW';
+  document.getElementById('pageTitle').textContent = 'Your assigned trainings';
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  renderStaffTrainingList();
+}
+function exitStaffView(){
+  staffSession = null;
+  document.getElementById('staffBanner').classList.add('hidden');
+  document.querySelector('.sidebar').style.display = 'flex';
+  showView('dashboard');
+}
+function renderStaffTrainingList(){
+  const mine = state.trainings.filter(t => (t.assignedStaff||[]).includes(staffSession));
+  const content = document.getElementById('content');
+  const html = mine.length ? mine.map(t=>{
+    const done = t.completions && t.completions[staffSession];
+    return `<div class="card" style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-weight:600;">${esc(t.title)}</div><div class="muted small">${esc(t.category||'General')}${t.dueDate?(' · due '+fmtDate(t.dueDate)):''}</div></div>
+        ${ done ? '<span class="chip chip-teal">Completed '+fmtDate(done.date)+(t.quiz&&t.quiz.length?(' · score '+done.score+'%'):'')+'</span>'
+                : '<button class="btn btn-teal btn-sm" onclick="openStaffTraining(\''+t.id+'\')">Start</button>' }
+      </div>
+    </div>`;
+  }).join('') : '<div class="card muted">No trainings assigned to you right now.</div>';
+  content.innerHTML = '<div id="staffContentArea">'+html+'</div>';
+}
+function openStaffTraining(id){
+  const t = state.trainings.find(x=>x.id===id);
+  window._quizAnswers = new Array((t.quiz||[]).length).fill(null);
+  const quizHtml = (t.quiz||[]).length ? `
+    <div class="divider"></div>
+    <div style="font-weight:600;margin-bottom:8px;">Quiz</div>
+    <div id="quizArea">${t.quiz.map((q,i)=>`
+      <div class="q-row">
+        <div style="font-weight:500;margin-bottom:6px;">${i+1}. ${esc(q.q)}</div>
+        ${q.options.map((o,oi)=>`<label style="display:flex;align-items:center;gap:8px;font-weight:400;padding:3px 0;">
+          <input type="radio" name="qz${i}" onchange="window._quizAnswers[${i}]=${oi}"> ${esc(o)}
+        </label>`).join('')}
+      </div>`).join('')}</div>
+    <div id="quizErr" class="err"></div>
+  ` : '<div class="divider"></div><div class="muted small">No quiz for this module — mark complete after reviewing the material.</div>';
+  document.getElementById('content').innerHTML = `
+    <button class="btn btn-ghost btn-sm" onclick="renderStaffTrainingList()">← Back</button>
+    <div class="card" style="margin-top:12px;">
+      <h2 style="margin-top:0;">${esc(t.title)}</h2>
+      <div class="muted small">${esc(t.category||'General')}</div>
+      <div class="divider"></div>
+      <div style="white-space:pre-wrap;line-height:1.6;">${esc(t.material) || '<span class="muted">No written material attached — refer to the linked SOP.</span>'}</div>
+      ${quizHtml}
+      <div style="margin-top:16px;">
+        <button class="btn btn-primary" onclick="submitStaffTraining('${t.id}')">Mark complete${ (t.quiz||[]).length ? ' & submit quiz' : ''}</button>
+      </div>
+    </div>
+  `;
+}
+async function submitStaffTraining(id){
+  const t = state.trainings.find(x=>x.id===id);
+  let score = null;
+  if((t.quiz||[]).length){
+    const answers = window._quizAnswers||[];
+    if(answers.some(a=>a===null)){ document.getElementById('quizErr').textContent='Answer every question before submitting.'; document.getElementById('quizErr').style.display='block'; return; }
+    const correct = t.quiz.filter((q,i)=>answers[i]===q.correct).length;
+    score = Math.round((correct/t.quiz.length)*100);
+  }
+  t.completions = t.completions || {};
+  t.completions[staffSession] = { date: todayStr(), score };
+  const ok = await saveKey('trainings');
+  if(ok){ toast('Training marked complete'+(score!==null?(' — score '+score+'%'):''),'ok'); renderStaffTrainingList(); }
+}
+
+/* ============ DOCUMENT CONTROL ============ */
+function docStatus(d){
+  if(d.status==='Obsolete') return {label:'Obsolete', chip:'chip-grey'};
+  const dd = daysUntil(d.reviewDate);
+  if(dd===null) return {label:'Current', chip:'chip-teal'};
+  if(dd<0) return {label:'Review overdue', chip:'chip-red'};
+  if(dd<=30) return {label:'Review due '+dd+'d', chip:'chip-amber'};
+  return {label:'Current', chip:'chip-teal'};
+}
+function renderDocuments(){
+  const rows = state.documents.map(d=>{
+    const s = docStatus(d);
+    return '<tr>'+
+      '<td><div style="font-weight:600;">'+esc(d.title)+'</div><div class="muted small">'+esc(d.docType||'Document')+(d.clauseTags?' · Cl. '+esc(d.clauseTags):'')+'</div></td>'+
+      '<td class="mono">v'+esc(d.version)+'</td>'+
+      '<td>'+esc(d.approver||'—')+'</td>'+
+      '<td>'+fmtDate(d.reviewDate)+'</td>'+
+      '<td><span class="chip '+s.chip+'">'+s.label+'</span></td>'+
+      '<td style="white-space:nowrap;">'+
+        '<button class="btn btn-sm" onclick="newDocVersion(\''+d.id+'\')">New version</button> '+
+        '<button class="icon-btn" title="History" onclick="openDocHistory(\''+d.id+'\')">☰</button>'+
+        '<button class="icon-btn" title="Edit" onclick="openDocForm(\''+d.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncDocToDrive(\''+d.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteDoc(\''+d.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-documents').innerHTML = `
+    <div class="section-head"><h2>Document control register</h2>
+      <button class="btn btn-primary" onclick="openDocForm()">+ Add document</button></div>
+    <table><thead><tr><th>Document</th><th>Version</th><th>Approver</th><th>Next review</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="6">No controlled documents registered yet — Quality Manual, SOPs, QSPs, formats.</td></tr>'}</tbody></table>
+    <div class="sync-note">Cl. 8.2 / 8.3 — "New version" automatically stamps the prior version obsolete and keeps it in history, so distribution and withdrawal are traceable.</div>
+  `;
+}
+function openDocForm(id){
+  const existing = id ? state.documents.find(x=>x.id===id) : null;
+  const d = existing || { id:uid(), title:'', docType:'SOP', version:'1.0', approver:'', reviewDate:'', clauseTags:'', status:'Current', history:[] };
+  openModal(`
+    <h3>${existing?'Edit':'Add'} document</h3>
+    <div class="modal-sub">Cl. 8.2 / 8.3 — management system documentation</div>
+    <div class="field"><label>Title</label><input id="f-dtitle" value="${esc(d.title)}" placeholder="e.g. SOP for GCV determination"></div>
+    <div id="err-dtitle" class="err"></div>
+    <div class="field-row">
+      <div class="field"><label>Type</label><select id="f-dtype">${['Quality Manual','SOP','QSP','Format / Record template','Policy','Work Instruction'].map(t=>'<option '+(d.docType===t?'selected':'')+'>'+t+'</option>').join('')}</select></div>
+      <div class="field"><label>Version</label><input id="f-dver" value="${esc(d.version)}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Approver</label><input id="f-dapp" value="${esc(d.approver)}"></div>
+      <div class="field"><label>Next review date</label><input type="date" id="f-drev" value="${d.reviewDate||''}"></div>
+    </div>
+    <div class="field"><label>Clause tag(s)</label><input id="f-dclause" value="${esc(d.clauseTags||'')}" placeholder="e.g. 6.4, 7.6 — comma separated, shown to the assessor in Clause Explorer"></div>
+    ${fileFieldHtml(d.id, 'Attach the document file (PDF, max 4MB)')}
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveDoc('${d.id}')">Save document</button>
+    </div>
+  `);
+  refreshFileArea(d.id);
+}
+async function saveDoc(id){
+  const title = document.getElementById('f-dtitle').value.trim();
+  if(!title){ showFieldError('err-dtitle','Enter a document title'); return; }
+  const data = { title, docType: document.getElementById('f-dtype').value, version: document.getElementById('f-dver').value.trim()||'1.0',
+    approver: document.getElementById('f-dapp').value.trim(), reviewDate: document.getElementById('f-drev').value,
+    clauseTags: document.getElementById('f-dclause').value.trim() };
+  const existing = state.documents.find(x=>x.id===id);
+  if(existing){ Object.assign(existing, data); }
+  else{ state.documents.push({ id, ...data, status:'Current', history:[], createdAt:todayStr() }); }
+  const ok = await saveKey('documents');
+  if(ok){ closeModal(); toast('Document saved','ok'); renderDocuments(); renderDashboard(); }
+}
+async function deleteDoc(id){
+  if(!confirm('Remove this document from the register?')) return;
+  state.documents = state.documents.filter(x=>x.id!==id);
+  await saveKey('documents'); renderDocuments(); renderDashboard();
+}
+async function newDocVersion(id){
+  const d = state.documents.find(x=>x.id===id);
+  const nextVer = prompt('New version number (current: '+d.version+'):', (parseFloat(d.version)+0.1).toFixed(1));
+  if(!nextVer) return;
+  d.history = d.history || [];
+  d.history.push({ version:d.version, approver:d.approver, supersededOn:todayStr() });
+  d.version = nextVer;
+  d.status = 'Current';
+  const ok = await saveKey('documents');
+  if(ok){ toast('New version '+nextVer+' created — v'+d.history[d.history.length-1].version+' marked obsolete','ok'); renderDocuments(); renderDashboard(); }
+}
+function openDocHistory(id){
+  const d = state.documents.find(x=>x.id===id);
+  const h = (d.history||[]).slice().reverse();
+  openModal(`
+    <h3>Version history — ${esc(d.title)}</h3>
+    <div class="modal-sub">Current: v${esc(d.version)}</div>
+    ${ h.length ? h.map(x=>'<div style="padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;"><span class="chip chip-grey">Obsolete</span> v'+esc(x.version)+' — approved by '+esc(x.approver||'—')+' — superseded '+fmtDate(x.supersededOn)+'</div>').join('') : '<div class="muted small">No prior versions.</div>' }
+    <div class="modal-actions"><button class="btn" onclick="closeModal()">Close</button></div>
+  `);
+}
+async function syncDocToDrive(id){
+  const d = state.documents.find(x=>x.id===id);
+  const payload = { type:'controlled_document', title:d.title, docType:d.docType, version:d.version, approver:d.approver,
+    reviewDate:d.reviewDate, status:d.status, history:d.history, exportedAt:new Date().toISOString() };
+  sendToClaudeForDriveSync('Document_Control', 'Doc_'+slug(d.title)+'_v'+slug(d.version)+'.json', payload);
+}
+
+/* ============ RISK REGISTER ============ */
+function riskLevel(likelihood, impact){
+  const score = likelihood*impact;
+  if(score>=15) return {label:'High', chip:'chip-red'};
+  if(score>=8) return {label:'Medium', chip:'chip-amber'};
+  return {label:'Low', chip:'chip-teal'};
+}
+function renderRisk(){
+  const rows = state.risks.map(r=>{
+    const lvl = riskLevel(r.likelihood, r.impact);
+    const dd = daysUntil(r.reviewDate);
+    const revChip = dd===null ? '' : dd<0 ? ' <span class="chip chip-red">Review overdue</span>' : dd<=30 ? ' <span class="chip chip-amber">Review due '+dd+'d</span>' : '';
+    return '<tr>'+
+      '<td><div style="font-weight:600;">'+esc(r.title)+'</div><div class="muted small">'+esc(r.category||'—')+'</div></td>'+
+      '<td class="mono">'+r.likelihood+' × '+r.impact+' = '+(r.likelihood*r.impact)+'</td>'+
+      '<td><span class="chip '+lvl.chip+'">'+lvl.label+'</span></td>'+
+      '<td>'+esc(r.owner||'—')+'</td>'+
+      '<td>'+fmtDate(r.reviewDate)+revChip+'</td>'+
+      '<td style="white-space:nowrap;">'+
+        '<button class="icon-btn" title="Edit" onclick="openRiskForm(\''+r.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncRiskToDrive(\''+r.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteRisk(\''+r.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-risk').innerHTML = `
+    <div class="section-head"><h2>Risk & opportunity register</h2>
+      <button class="btn btn-primary" onclick="openRiskForm()">+ Add risk</button></div>
+    <table><thead><tr><th>Risk</th><th>Score</th><th>Level</th><th>Owner</th><th>Next review</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="6">No risks logged yet.</td></tr>'}</tbody></table>
+    <div class="sync-note">Cl. 8.5 — actions to address risks and opportunities. Score = likelihood (1-5) × impact (1-5).</div>
+  `;
+}
+function openRiskForm(id){
+  const r = id ? state.risks.find(x=>x.id===id) : { id:null, title:'', category:'Technical', likelihood:3, impact:3, owner:'', mitigation:'', reviewDate:'' };
+  openModal(`
+    <h3>${id?'Edit':'Add'} risk</h3>
+    <div class="field"><label>Risk description</label><input id="f-rtitle" value="${esc(r.title)}" placeholder="e.g. Single point of failure — only one analyst authorised for GCV"></div>
+    <div id="err-rtitle" class="err"></div>
+    <div class="field"><label>Category</label><select id="f-rcat">${['Technical','Personnel','Impartiality','Financial','Infrastructure','Data integrity'].map(c=>'<option '+(r.category===c?'selected':'')+'>'+c+'</option>').join('')}</select></div>
+    <div class="field-row">
+      <div class="field"><label>Likelihood (1-5)</label><input type="number" id="f-rlik" min="1" max="5" value="${r.likelihood}"></div>
+      <div class="field"><label>Impact (1-5)</label><input type="number" id="f-rimp" min="1" max="5" value="${r.impact}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Owner</label><input id="f-rowner" value="${esc(r.owner)}"></div>
+      <div class="field"><label>Next review date</label><input type="date" id="f-rrev" value="${r.reviewDate||''}"></div>
+    </div>
+    <div class="field"><label>Mitigation / action</label><textarea id="f-rmit" rows="3">${esc(r.mitigation)}</textarea></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveRisk('${r.id||''}')">Save risk</button>
+    </div>
+  `);
+}
+async function saveRisk(id){
+  const title = document.getElementById('f-rtitle').value.trim();
+  if(!title){ showFieldError('err-rtitle','Describe the risk'); return; }
+  const clamp = v => Math.max(1, Math.min(5, parseInt(v)||1));
+  const data = { title, category: document.getElementById('f-rcat').value, likelihood: clamp(document.getElementById('f-rlik').value),
+    impact: clamp(document.getElementById('f-rimp').value), owner: document.getElementById('f-rowner').value.trim(),
+    mitigation: document.getElementById('f-rmit').value.trim(), reviewDate: document.getElementById('f-rrev').value };
+  if(id){ Object.assign(state.risks.find(x=>x.id===id), data); }
+  else{ state.risks.push({ id:uid(), ...data, createdAt:todayStr() }); }
+  const ok = await saveKey('risks');
+  if(ok){ closeModal(); toast('Risk saved','ok'); renderRisk(); renderDashboard(); }
+}
+async function deleteRisk(id){
+  if(!confirm('Remove this risk?')) return;
+  state.risks = state.risks.filter(x=>x.id!==id);
+  await saveKey('risks'); renderRisk(); renderDashboard();
+}
+async function syncRiskToDrive(id){
+  const r = state.risks.find(x=>x.id===id);
+  const payload = { type:'risk_entry', title:r.title, category:r.category, likelihood:r.likelihood, impact:r.impact,
+    score:r.likelihood*r.impact, owner:r.owner, mitigation:r.mitigation, reviewDate:r.reviewDate, exportedAt:new Date().toISOString() };
+  sendToClaudeForDriveSync('Risk_Register', 'Risk_'+slug(r.title)+'_'+todayStr()+'.json', payload);
+}
+
+/* ============ NCR & CAPA ============ */
+function renderNcr(){
+  const rows = state.ncrs.map(n=>{
+    return '<tr>'+
+      '<td><div style="font-weight:600;">'+esc(n.title)+'</div><div class="muted small">Cl. '+esc(n.clause||'—')+' · raised '+fmtDate(n.raisedDate)+'</div></td>'+
+      '<td>'+esc(n.rootCause? (n.rootCause.slice(0,40)+(n.rootCause.length>40?'…':'')) : '<span class="muted">Not recorded</span>')+'</td>'+
+      '<td><span class="chip '+(n.status==='Closed'?'chip-teal':'chip-amber')+'">'+esc(n.status)+'</span></td>'+
+      '<td style="white-space:nowrap;">'+
+        (n.status!=='Closed' ? '<button class="btn btn-sm" onclick="tryCloseNcr(\''+n.id+'\')">Close</button> ' : '')+
+        '<button class="icon-btn" title="Edit" onclick="openNcrForm(\''+n.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncNcrToDrive(\''+n.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteNcr(\''+n.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-ncr').innerHTML = `
+    <div class="section-head"><h2>Nonconforming work & CAPA</h2>
+      <button class="btn btn-primary" onclick="openNcrForm()">+ Raise NCR</button></div>
+    <table><thead><tr><th>NCR</th><th>Root cause</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="4">No nonconformances raised.</td></tr>'}</tbody></table>
+    <div class="sync-note">Cl. 7.10 — fail-safe rule: an NCR cannot be closed without a documented root cause and a recorded effectiveness check.</div>
+  `;
+}
+function openNcrForm(id){
+  const n = id ? state.ncrs.find(x=>x.id===id) : { id:null, title:'', clause:'', description:'', rootCause:'', correctiveAction:'', effectivenessCheck:'', raisedDate:todayStr(), status:'Open' };
+  openModal(`
+    <h3>${id?'Edit':'Raise'} NCR</h3>
+    <div class="field"><label>Title</label><input id="f-ntitle" value="${esc(n.title)}" placeholder="e.g. QC chart out-of-control point on GCV"></div>
+    <div id="err-ntitle" class="err"></div>
+    <div class="field-row">
+      <div class="field"><label>Clause reference</label><input id="f-nclause" value="${esc(n.clause)}" placeholder="e.g. 7.7"></div>
+      <div class="field"><label>Date raised</label><input type="date" id="f-ndate" value="${n.raisedDate}"></div>
+    </div>
+    <div class="field"><label>Description</label><textarea id="f-ndesc" rows="2">${esc(n.description)}</textarea></div>
+    <div class="field"><label>Root cause</label><textarea id="f-nroot" rows="2" placeholder="5-Why / fishbone outcome">${esc(n.rootCause)}</textarea></div>
+    <div class="field"><label>Corrective action</label><textarea id="f-ncorr" rows="2">${esc(n.correctiveAction)}</textarea></div>
+    <div class="field"><label>Effectiveness check (required to close)</label><textarea id="f-neff" rows="2" placeholder="Evidence the corrective action worked">${esc(n.effectivenessCheck)}</textarea></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveNcr('${n.id||''}')">Save NCR</button>
+    </div>
+  `);
+}
+async function saveNcr(id){
+  const title = document.getElementById('f-ntitle').value.trim();
+  if(!title){ showFieldError('err-ntitle','Enter a title'); return; }
+  const data = { title, clause: document.getElementById('f-nclause').value.trim(), raisedDate: document.getElementById('f-ndate').value,
+    description: document.getElementById('f-ndesc').value.trim(), rootCause: document.getElementById('f-nroot').value.trim(),
+    correctiveAction: document.getElementById('f-ncorr').value.trim(), effectivenessCheck: document.getElementById('f-neff').value.trim() };
+  if(id){ Object.assign(state.ncrs.find(x=>x.id===id), data); }
+  else{ state.ncrs.push({ id:uid(), ...data, status:'Open', createdAt:todayStr() }); }
+  const ok = await saveKey('ncrs');
+  if(ok){ closeModal(); toast('NCR saved','ok'); renderNcr(); renderDashboard(); }
+}
+async function deleteNcr(id){
+  if(!confirm('Delete this NCR?')) return;
+  state.ncrs = state.ncrs.filter(x=>x.id!==id);
+  await saveKey('ncrs'); renderNcr(); renderDashboard();
+}
+async function tryCloseNcr(id){
+  const n = state.ncrs.find(x=>x.id===id);
+  if(!n.rootCause.trim() || !n.effectivenessCheck.trim()){
+    toast('Cannot close — root cause and effectiveness check are required first','err');
+    openNcrForm(id);
+    return;
+  }
+  const activeRole = currentUser ? currentUser.role : 'Guest';
+  if(!ROLE_PERMISSIONS[activeRole] || !ROLE_PERMISSIONS[activeRole].closeNcr){
+    toast('Only a Technical Reviewer, Authorised Signatory or Quality Manager can close an NCR','err'); return;
+  }
+  n.status = 'Closed'; n.closedDate = todayStr();
+  const ok = await saveKey('ncrs');
+  if(ok){ toast('NCR closed','ok'); renderNcr(); renderDashboard(); }
+}
+async function syncNcrToDrive(id){
+  const n = state.ncrs.find(x=>x.id===id);
+  const payload = { type:'ncr_capa', title:n.title, clause:n.clause, raisedDate:n.raisedDate, description:n.description,
+    rootCause:n.rootCause, correctiveAction:n.correctiveAction, effectivenessCheck:n.effectivenessCheck, status:n.status, exportedAt:new Date().toISOString() };
+  sendToClaudeForDriveSync('NCR_CAPA', 'NCR_'+slug(n.title)+'_'+todayStr()+'.json', payload);
+}
+
+/* ============ NABL POLICY LIBRARY ============ */
+function renderNablLibrary(){
+  const rows = state.nabldocs.map(d=>{
+    return '<tr>'+
+      '<td><div style="font-weight:600;">'+esc(d.name)+'</div><div class="muted small">'+esc(d.purpose)+'</div></td>'+
+      '<td><span class="chip '+(d.status==='Uploaded'?'chip-teal':'chip-red')+'">'+esc(d.status)+'</span></td>'+
+      '<td>'+ (d.driveLink ? '<a class="folder-link" href="'+esc(d.driveLink)+'" target="_blank">Open ↗</a>' : '<span class="muted small">No link yet</span>') +'</td>'+
+      '<td style="white-space:nowrap;"><button class="icon-btn" title="Edit" onclick="openNablForm(\''+d.id+'\')">✎</button></td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-nablibrary').innerHTML = `
+    <div class="section-head"><h2>NABL policy & reference document library</h2></div>
+    <table><thead><tr><th>Document</th><th>Status</th><th>Location</th><th>Actions</th></tr></thead>
+    <tbody>${rows}</tbody></table>
+    <div class="sync-note">Upload the actual PDFs to <a class="folder-link" href="https://drive.google.com/drive/folders/${DRIVE_FOLDERS.nablibrary}" target="_blank">NABL_Policy_Library</a> in Drive, then paste the file's share link here and mark it Uploaded — this is what an assessor checks first.</div>
+  `;
+}
+function openNablForm(id){
+  const d = state.nabldocs.find(x=>x.id===id);
+  openModal(`
+    <h3>${esc(d.name)}</h3>
+    <div class="modal-sub">${esc(d.purpose)}</div>
+    <div class="field"><label>Status</label><select id="f-nlstatus"><option ${d.status==='Missing'?'selected':''}>Missing</option><option ${d.status==='Uploaded'?'selected':''}>Uploaded</option></select></div>
+    <div class="field"><label>Drive link (for larger files)</label><input id="f-nllink" value="${esc(d.driveLink)}" placeholder="https://drive.google.com/..."></div>
+    <div class="field"><label>Notes</label><textarea id="f-nlnotes" rows="2">${esc(d.notes)}</textarea></div>
+    ${fileFieldHtml(d.id, 'Or attach directly here (PDF, max 4MB)')}
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveNabl('${d.id}')">Save</button>
+    </div>
+  `);
+  refreshFileArea(d.id);
+}
+async function saveNabl(id){
+  const d = state.nabldocs.find(x=>x.id===id);
+  d.status = document.getElementById('f-nlstatus').value;
+  d.driveLink = document.getElementById('f-nllink').value.trim();
+  d.notes = document.getElementById('f-nlnotes').value.trim();
+  const fm = await getFileMeta(d.id);
+  if(fm && d.status==='Missing') d.status='Uploaded';
+  const ok = await saveKey('nabldocs');
+  if(ok){ closeModal(); toast('Saved','ok'); renderNablLibrary(); renderDashboard(); }
+}
+
+/* ============ COMPETENCY & AUTHORIZATION ============ */
+function competencyStatus(c){
+  if(c.status==='Suspended') return {label:'Suspended', chip:'chip-grey'};
+  const d = daysUntil(c.expiryDate);
+  if(d===null) return {label:'Authorized', chip:'chip-teal'};
+  if(d<0) return {label:'Expired', chip:'chip-red'};
+  if(d<=30) return {label:'Expires '+d+'d', chip:'chip-amber'};
+  return {label:'Authorized', chip:'chip-teal'};
+}
+function renderCompetency(){
+  const rows = state.competency.map(c=>{
+    const s = competencyStatus(c);
+    return '<tr>'+
+      '<td style="font-weight:600;">'+esc(c.staffName)+'</td>'+
+      '<td><span class="chip chip-grey">'+esc(c.authType||'Testing / Analysis')+'</span></td>'+
+      '<td>'+esc(c.method)+'</td>'+
+      '<td>'+fmtDate(c.authorizedDate)+'</td>'+
+      '<td>'+fmtDate(c.expiryDate)+'</td>'+
+      '<td><span class="chip '+s.chip+'">'+s.label+'</span></td>'+
+      '<td style="white-space:nowrap;">'+
+        '<button class="icon-btn" title="Edit" onclick="openCompForm(\''+c.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncCompToDrive(\''+c.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteComp(\''+c.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-competency').innerHTML = `
+    <div class="section-head"><h2>Competency & method authorization</h2>
+      <button class="btn btn-primary" onclick="openCompForm()">+ Add authorization</button></div>
+    <table><thead><tr><th>Staff</th><th>Category</th><th>Method</th><th>Authorized</th><th>Expiry</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="7">No method authorizations on record.</td></tr>'}</tbody></table>
+    <div class="sync-note">Cl. 6.2 — categories follow standard practice: Sampling, Testing / Analysis, Result Review, Report Authorization (Signatory), Equipment Operation, Opinions & Interpretations. The report-issuance gate checks that the analyst holds a "Testing / Analysis" authorization and the reviewer holds a "Result Review" authorization for the relevant method.</div>
+  `;
+}
+function openCompForm(id){
+  const existing = id ? state.competency.find(x=>x.id===id) : null;
+  const c = existing || { id:uid(), staffName:'', method:'', authType:'Testing / Analysis', authorizedDate:todayStr(), expiryDate:'', status:'Authorized' };
+  const names = state.staff.map(s=>s.name);
+  const methodOptions = state.scopeparams.map(p=>p.parameter);
+  openModal(`
+    <h3>${existing?'Edit':'Add'} authorization</h3>
+    <div class="modal-sub">Cl. 6.2 — authorization categories follow standard NABL/ISO 17025 roles</div>
+    <div class="field"><label>Staff member</label><input id="f-cname" list="staffListDL" value="${esc(c.staffName)}"><datalist id="staffListDL">${names.map(n=>'<option value="'+esc(n)+'">').join('')}</datalist></div>
+    <div id="err-cname" class="err"></div>
+    <div class="field"><label>Authorization category</label>
+      <select id="f-catype">${['Sampling','Testing / Analysis','Result Review','Report Authorization (Signatory)','Equipment Operation','Opinions & Interpretations'].map(t=>'<option '+(c.authType===t?'selected':'')+'>'+t+'</option>').join('')}</select>
+    </div>
+    <div class="field"><label>Method / parameter</label><input id="f-cmethod" list="dl-scopemethods2" value="${esc(c.method)}" placeholder="e.g. Gross Calorific Value (GCV)"><datalist id="dl-scopemethods2">${methodOptions.map(m=>'<option value="'+esc(m)+'">').join('')}</datalist></div>
+    <div class="field-row">
+      <div class="field"><label>Authorized on</label><input type="date" id="f-cauth" value="${c.authorizedDate}"></div>
+      <div class="field"><label>Expiry / next review</label><input type="date" id="f-cexp" value="${c.expiryDate||''}"></div>
+    </div>
+    <div class="field"><label>Status</label><select id="f-cstatus"><option ${c.status==='Authorized'?'selected':''}>Authorized</option><option ${c.status==='Suspended'?'selected':''}>Suspended</option></select></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveComp('${c.id}')">Save</button>
+    </div>
+  `);
+}
+async function saveComp(id){
+  const staffName = document.getElementById('f-cname').value.trim();
+  if(!staffName){ showFieldError('err-cname','Select or enter a staff name'); return; }
+  const data = { staffName, authType: document.getElementById('f-catype').value, method: document.getElementById('f-cmethod').value.trim(), authorizedDate: document.getElementById('f-cauth').value,
+    expiryDate: document.getElementById('f-cexp').value, status: document.getElementById('f-cstatus').value };
+  const existing = state.competency.find(x=>x.id===id);
+  if(existing){ Object.assign(existing, data); }
+  else{ state.competency.push({ id, ...data, createdAt:todayStr() }); }
+  const ok = await saveKey('competency');
+  if(ok){ closeModal(); toast('Authorization saved','ok'); renderCompetency(); renderDashboard(); }
+}
+async function deleteComp(id){
+  if(!confirm('Remove this authorization?')) return;
+  state.competency = state.competency.filter(x=>x.id!==id);
+  await saveKey('competency'); renderCompetency(); renderDashboard();
+}
+async function syncCompToDrive(id){
+  const c = state.competency.find(x=>x.id===id);
+  const payload = { type:'competency_record', staffName:c.staffName, method:c.method, authorizedDate:c.authorizedDate, expiryDate:c.expiryDate, status:c.status, exportedAt:new Date().toISOString() };
+  sendToClaudeForDriveSync('Competency_Authorization', 'Competency_'+slug(c.staffName)+'_'+slug(c.method)+'.json', payload);
+}
+
+/* ============ METROLOGICAL TRACEABILITY (CRM / REFERENCE STANDARDS) ============ */
+function crmStatus(c){
+  const d = daysUntil(c.expiryDate);
+  if(d===null) return {label:'On record', chip:'chip-grey'};
+  if(d<0) return {label:'Expired', chip:'chip-red'};
+  if(d<=30) return {label:'Expires '+d+'d', chip:'chip-amber'};
+  return {label:'Valid', chip:'chip-teal'};
+}
+function renderTraceability(){
+  const rows = state.crm.map(c=>{
+    const s = crmStatus(c);
+    return '<tr>'+
+      '<td><div style="font-weight:600;">'+esc(c.name)+'</div><div class="muted small">'+esc(c.certNumber||'—')+'</div></td>'+
+      '<td>'+esc(c.supplier||'—')+'</td>'+
+      '<td>'+esc(c.traceableTo||'—')+'</td>'+
+      '<td>'+fmtDate(c.expiryDate)+'</td>'+
+      '<td><span class="chip '+s.chip+'">'+s.label+'</span></td>'+
+      '<td style="white-space:nowrap;">'+
+        '<button class="icon-btn" title="Edit" onclick="openCrmForm(\''+c.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncCrmToDrive(\''+c.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteCrm(\''+c.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-traceability').innerHTML = `
+    <div class="section-head"><h2>Metrological traceability — CRM & reference standards</h2>
+      <button class="btn btn-primary" onclick="openCrmForm()">+ Add reference standard</button></div>
+    <table><thead><tr><th>Standard / CRM</th><th>Supplier</th><th>Traceable to</th><th>Expiry</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="6">No reference standards on record.</td></tr>'}</tbody></table>
+    <div class="sync-note">Cl. 6.5 — every value reported must trace back to SI through an unbroken chain. Record the certificate number and issuing body (e.g. NPL) for each CRM/reference standard.</div>
+  `;
+}
+function openCrmForm(id){
+  const existing = id ? state.crm.find(x=>x.id===id) : null;
+  const c = existing || { id:uid(), name:'', certNumber:'', supplier:'', traceableTo:'NPL India', receivedDate:todayStr(), expiryDate:'' };
+  openModal(`
+    <h3>${existing?'Edit':'Add'} reference standard</h3>
+    <div class="field"><label>Name / description</label><input id="f-crname" value="${esc(c.name)}" placeholder="e.g. Certified coal CRM — GCV reference"></div>
+    <div id="err-crname" class="err"></div>
+    <div class="field-row">
+      <div class="field"><label>Certificate number</label><input id="f-crcert" value="${esc(c.certNumber)}"></div>
+      <div class="field"><label>Supplier</label><input id="f-crsup" value="${esc(c.supplier)}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Traceable to</label><input id="f-crtrace" value="${esc(c.traceableTo)}" placeholder="e.g. NPL India / BIPM"></div>
+      <div class="field"><label>Expiry date</label><input type="date" id="f-crexp" value="${c.expiryDate||''}"></div>
+    </div>
+    ${fileFieldHtml(c.id, 'Attach certificate (PDF, max 4MB)')}
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveCrm('${c.id}')">Save</button>
+    </div>
+  `);
+  refreshFileArea(c.id);
+}
+async function saveCrm(id){
+  const name = document.getElementById('f-crname').value.trim();
+  if(!name){ showFieldError('err-crname','Enter a name'); return; }
+  const data = { name, certNumber: document.getElementById('f-crcert').value.trim(), supplier: document.getElementById('f-crsup').value.trim(),
+    traceableTo: document.getElementById('f-crtrace').value.trim(), expiryDate: document.getElementById('f-crexp').value };
+  const existing = state.crm.find(x=>x.id===id);
+  if(existing){ Object.assign(existing, data); }
+  else{ state.crm.push({ id, ...data, createdAt:todayStr() }); }
+  const ok = await saveKey('crm');
+  if(ok){ closeModal(); toast('Reference standard saved','ok'); renderTraceability(); renderDashboard(); }
+}
+async function deleteCrm(id){
+  if(!confirm('Remove this reference standard?')) return;
+  state.crm = state.crm.filter(x=>x.id!==id);
+  await saveKey('crm'); renderTraceability(); renderDashboard();
+}
+async function syncCrmToDrive(id){
+  const c = state.crm.find(x=>x.id===id);
+  const payload = { type:'traceability_record', name:c.name, certNumber:c.certNumber, supplier:c.supplier, traceableTo:c.traceableTo, expiryDate:c.expiryDate, exportedAt:new Date().toISOString() };
+  sendToClaudeForDriveSync('Metrological_Traceability', 'CRM_'+slug(c.name)+'.json', payload);
+}
+
+/* ============ ENVIRONMENTAL MONITORING ============ */
+function envExcursion(e){
+  return e.tempC < e.tempLow || e.tempC > e.tempHigh || e.humidity < e.humLow || e.humidity > e.humHigh;
+}
+function renderEnvironment(){
+  const rows = state.envlogs.slice().reverse().slice(0,60).map(e=>{
+    const exc = envExcursion(e);
+    return '<tr>'+
+      '<td class="mono">'+fmtDate(e.date)+'</td>'+
+      '<td>'+esc(e.area)+'</td>'+
+      '<td class="mono">'+e.tempC+'°C <span class="muted">('+e.tempLow+'–'+e.tempHigh+')</span></td>'+
+      '<td class="mono">'+e.humidity+'% <span class="muted">('+e.humLow+'–'+e.humHigh+')</span></td>'+
+      '<td>'+(exc ? '<span class="chip chip-red">Excursion</span>' : '<span class="chip chip-teal">In range</span>')+'</td>'+
+      '<td style="white-space:nowrap;">'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncEnvToDrive(\''+e.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteEnv(\''+e.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-environment').innerHTML = `
+    <div class="section-head"><h2>Environmental monitoring — controlled areas</h2>
+      <button class="btn btn-primary" onclick="openEnvForm()">+ Log reading</button></div>
+    <table><thead><tr><th>Date</th><th>Area</th><th>Temperature</th><th>Humidity</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="6">No readings logged yet.</td></tr>'}</tbody></table>
+    <div class="sync-note">Cl. 6.3 — facilities and environmental conditions. Default acceptable range 20–27°C, 40–70% RH; adjust per area's validated limits.</div>
+  `;
+}
+function openEnvForm(){
+  openModal(`
+    <h3>Log environmental reading</h3>
+    <div class="field-row">
+      <div class="field"><label>Date</label><input type="date" id="f-edate" value="${todayStr()}"></div>
+      <div class="field"><label>Area</label><input id="f-earea" placeholder="e.g. Coal analysis bay"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Temperature (°C)</label><input type="number" step="0.1" id="f-etemp" placeholder="e.g. 23.5"></div>
+      <div class="field"><label>Humidity (%RH)</label><input type="number" step="0.1" id="f-ehum" placeholder="e.g. 55"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Temp range low–high</label>
+        <div style="display:flex;gap:6px;"><input type="number" id="f-etlow" value="20" style="width:70px;"><input type="number" id="f-ethigh" value="27" style="width:70px;"></div></div>
+      <div class="field"><label>Humidity range low–high</label>
+        <div style="display:flex;gap:6px;"><input type="number" id="f-ehlow" value="40" style="width:70px;"><input type="number" id="f-ehhigh" value="70" style="width:70px;"></div></div>
+    </div>
+    <div id="err-etemp" class="err"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEnv()">Save reading</button>
+    </div>
+  `);
+}
+async function saveEnv(){
+  const area = document.getElementById('f-earea').value.trim();
+  const tempC = parseFloat(document.getElementById('f-etemp').value);
+  const humidity = parseFloat(document.getElementById('f-ehum').value);
+  if(!area || isNaN(tempC) || isNaN(humidity)){ showFieldError('err-etemp','Enter area, temperature and humidity'); return; }
+  const entry = { id:uid(), date: document.getElementById('f-edate').value, area, tempC, humidity,
+    tempLow: parseFloat(document.getElementById('f-etlow').value), tempHigh: parseFloat(document.getElementById('f-ethigh').value),
+    humLow: parseFloat(document.getElementById('f-ehlow').value), humHigh: parseFloat(document.getElementById('f-ehhigh').value) };
+  state.envlogs.push(entry);
+  const ok = await saveKey('envlogs');
+  if(ok){
+    closeModal();
+    toast(envExcursion(entry) ? 'Reading logged — OUT OF RANGE' : 'Reading logged — in range', envExcursion(entry)?'err':'ok');
+    renderEnvironment(); renderDashboard();
+  }
+}
+async function deleteEnv(id){
+  state.envlogs = state.envlogs.filter(x=>x.id!==id);
+  await saveKey('envlogs'); renderEnvironment(); renderDashboard();
+}
+async function syncEnvToDrive(id){
+  const e = state.envlogs.find(x=>x.id===id);
+  sendToClaudeForDriveSync('Environmental_Monitoring', 'EnvLog_'+slug(e.area)+'_'+e.date+'.json', {type:'environmental_reading', ...e, excursion:envExcursion(e), exportedAt:new Date().toISOString()});
+}
+
+/* ============ TEST REPORT ISSUANCE (FAIL-SAFE GATE) ============ */
+function checkGate(r){
+  const reasons = [];
+  const comp = state.competency.find(c => c.staffName===r.analyst && c.method===r.method);
+  if(!comp) reasons.push('No authorization record for '+r.analyst+' on method "'+r.method+'"');
+  else{
+    if(comp.status!=='Authorized') reasons.push(r.analyst+"'s authorization is suspended");
+    const d = daysUntil(comp.expiryDate);
+    if(d!==null && d<0) reasons.push(r.analyst+"'s method authorization has expired");
+    if(comp.authType && comp.authType!=='Testing / Analysis') reasons.push(r.analyst+"'s authorization for this method is categorized as \""+comp.authType+"\", not Testing / Analysis");
+  }
+  if(r.reviewer){
+    const revComp = state.competency.find(c => c.staffName===r.reviewer && c.authType==='Result Review');
+    if(!revComp) reasons.push(r.reviewer+' does not hold a "Result Review" authorization — check Competency & authorization');
+  }
+  const eq = state.equipment.find(e => e.name===r.equipment);
+  if(r.equipment){
+    if(!eq) reasons.push('Equipment "'+r.equipment+'" not found in register');
+    else{
+      if(eq.outOfService) reasons.push('Equipment "'+r.equipment+'" is marked out of service');
+      const d = daysUntil(eq.nextDue);
+      if(d!==null && d<0) reasons.push('Equipment "'+r.equipment+'" calibration is overdue');
+    }
+  } else reasons.push('No equipment linked to this report');
+  if(!r.mu && r.mu!==0) reasons.push('Measurement uncertainty (MU) not recorded');
+  if(!r.reviewer) reasons.push('No independent technical reviewer assigned');
+  if(r.reviewer && r.reviewer===r.analyst) reasons.push('Reviewer must be different from the analyst');
+  return { ok: reasons.length===0, reasons };
+}
+const REPORT_STATUSES = ['Draft','Reviewed','Issued'];
+function renderReports(){
+  const rows = state.reports.map(r=>{
+    const gate = checkGate(r);
+    return '<tr>'+
+      '<td><div style="font-weight:600;">'+esc(r.sampleId)+'</div><div class="muted small">'+esc(r.method)+'</div></td>'+
+      '<td>'+esc(r.analyst)+'</td>'+
+      '<td>'+esc(r.reviewer||'—')+'</td>'+
+      '<td><span class="chip chip-grey">'+r.status+'</span></td>'+
+      '<td>'+ (r.status==='Issued' ? '<span class="chip chip-teal">Issued</span>' : gate.ok ? '<span class="chip chip-teal">Ready</span>' : '<span class="chip chip-red">'+gate.reasons.length+' blocker(s)</span>') +'</td>'+
+      '<td style="white-space:nowrap;">'+
+        (r.status!=='Issued' ? '<button class="btn btn-sm" onclick="advanceReport(\''+r.id+'\')">Advance</button> ' : '')+
+        '<button class="icon-btn" title="Edit" onclick="openReportForm(\''+r.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="View gate" onclick="viewGate(\''+r.id+'\')">⚑</button>'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncReportToDrive(\''+r.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteReport(\''+r.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-reports').innerHTML = `
+    <div class="section-head"><h2>Test report issuance</h2>
+      <button class="btn btn-primary" onclick="openReportForm()">+ New report</button></div>
+    <table><thead><tr><th>Sample / method</th><th>Analyst</th><th>Reviewer</th><th>Status</th><th>Gate</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="6">No reports logged yet.</td></tr>'}</tbody></table>
+    <div class="sync-note">Cl. 7.8 fail-safe gate — a report cannot reach <strong>Issued</strong> unless: the analyst holds a current method authorization, the equipment used is calibrated and in service, MU is recorded, and an independent reviewer (not the analyst) has signed off. "Advance" is blocked and tells you exactly what's missing.</div>
+  `;
+}
+function openReportForm(id){
+  const existing = id ? state.reports.find(x=>x.id===id) : null;
+  const r = existing || { id:uid(), sampleId:'', method:'', analyst:'', reviewer:'', equipment:'', mu:'', status:'Draft' };
+  const names = state.staff.map(s=>s.name);
+  const eqNames = state.equipment.map(e=>e.name);
+  const sampleIds = state.sampleregister.map(s=>s.sampleId);
+  const methodOptions = state.scopeparams.map(p=>p.parameter);
+  openModal(`
+    <h3>${existing?'Edit':'New'} test report</h3>
+    <div class="field-row">
+      <div class="field"><label>Sample ID</label><input id="f-rpid" list="dl-samples" value="${esc(r.sampleId)}" placeholder="e.g. CTL/2026/0091"><datalist id="dl-samples">${sampleIds.map(s=>'<option value="'+esc(s)+'">').join('')}</datalist></div>
+      <div class="field"><label>Method / parameter</label><input id="f-rpmethod" list="dl-scopemethods3" value="${esc(r.method)}" placeholder="e.g. Gross Calorific Value (GCV)"><datalist id="dl-scopemethods3">${methodOptions.map(m=>'<option value="'+esc(m)+'">').join('')}</datalist></div>
+    </div>
+    <div id="err-rpid" class="err"></div>
+    ${!methodOptions.length ? '<div class="muted small" style="margin-top:-8px;margin-bottom:10px;">Tip: add parameters in <a href="#" onclick="closeModal();showView(\'scopeparams\')">Scope & test parameters</a> to get a dropdown here instead of free text.</div>' : ''}
+    <div class="field-row">
+      <div class="field"><label>Analyst</label><input id="f-rpanalyst" list="staffListDL2" value="${esc(r.analyst)}"><datalist id="staffListDL2">${names.map(n=>'<option value="'+esc(n)+'">').join('')}</datalist></div>
+      <div class="field"><label>Reviewer</label><input id="f-rpreviewer" list="staffListDL3" value="${esc(r.reviewer)}"><datalist id="staffListDL3">${names.map(n=>'<option value="'+esc(n)+'">').join('')}</datalist></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Equipment used</label><input id="f-rpequip" list="eqListDL" value="${esc(r.equipment)}"><datalist id="eqListDL">${eqNames.map(n=>'<option value="'+esc(n)+'">').join('')}</datalist></div>
+      <div class="field"><label>Measurement uncertainty</label><input id="f-rpmu" value="${esc(r.mu)}" placeholder="e.g. ±120 kcal/kg (k=2)"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveReport('${r.id}')">Save report</button>
+    </div>
+  `);
+}
+async function saveReport(id){
+  const sampleId = document.getElementById('f-rpid').value.trim();
+  if(!sampleId){ showFieldError('err-rpid','Enter a sample ID'); return; }
+  const data = { sampleId, method: document.getElementById('f-rpmethod').value.trim(), analyst: document.getElementById('f-rpanalyst').value.trim(),
+    reviewer: document.getElementById('f-rpreviewer').value.trim(), equipment: document.getElementById('f-rpequip').value.trim(),
+    mu: document.getElementById('f-rpmu').value.trim() };
+  const existing = state.reports.find(x=>x.id===id);
+  if(existing){ Object.assign(existing, data); }
+  else{ state.reports.push({ id, ...data, status:'Draft', createdAt:todayStr() }); }
+  const ok = await saveKey('reports');
+  if(ok){ closeModal(); toast('Report saved','ok'); renderReports(); renderDashboard(); }
+}
+async function deleteReport(id){
+  if(!confirm('Delete this report record?')) return;
+  state.reports = state.reports.filter(x=>x.id!==id);
+  await saveKey('reports'); renderReports(); renderDashboard();
+}
+async function advanceReport(id){
+  const r = state.reports.find(x=>x.id===id);
+  const idx = REPORT_STATUSES.indexOf(r.status);
+  if(idx===0){ // Draft -> Reviewed: just needs a reviewer assigned and different from analyst
+    if(!r.reviewer){ toast('Assign a reviewer before moving to Reviewed','err'); return; }
+    if(r.reviewer===r.analyst){ toast('Reviewer must differ from the analyst','err'); return; }
+    r.status='Reviewed';
+  } else if(idx===1){ // Reviewed -> Issued: full gate check + signatory role
+    const gate = checkGate(r);
+    if(!gate.ok){ viewGate(id); return; }
+    const activeRole = currentUser ? currentUser.role : 'Guest';
+    if(!ROLE_PERMISSIONS[activeRole] || !ROLE_PERMISSIONS[activeRole].approveHigh){
+      toast('Only an Authorised Signatory or Quality Manager can issue a report — sign in as one, or ask them to issue it','err'); return;
+    }
+    r.status='Issued'; r.issuedDate=todayStr();
+  }
+  const ok = await saveKey('reports');
+  if(ok){ toast('Status: '+r.status,'ok'); renderReports(); renderDashboard(); }
+}
+function viewGate(id){
+  const r = state.reports.find(x=>x.id===id);
+  const gate = checkGate(r);
+  openModal(`
+    <h3>Issuance gate — ${esc(r.sampleId)}</h3>
+    <div class="modal-sub">${gate.ok ? 'All checks pass — this report can be issued.' : 'Blocked. The following must be resolved before this report can be issued:'}</div>
+    ${ gate.ok ? '<div class="chip chip-teal">Ready to issue</div>' :
+      gate.reasons.map(x=>'<div style="padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--red-d);">⚠ '+esc(x)+'</div>').join('') }
+    <div class="modal-actions"><button class="btn" onclick="closeModal()">Close</button>
+    ${gate.ok ? '<button class="btn btn-primary" onclick="closeModal();advanceReport(\''+id+'\')">Issue now</button>' : ''}</div>
+  `);
+}
+async function syncReportToDrive(id){
+  const r = state.reports.find(x=>x.id===id);
+  const gate = checkGate(r);
+  sendToClaudeForDriveSync('Test_Reports_Issued', 'Report_'+slug(r.sampleId)+'.json', { type:'test_report', ...r, gate, exportedAt:new Date().toISOString() });
+}
+
+/* ============ ALERTS CENTER ============ */
+function collectAlerts(){
+  const items = [];
+  state.equipment.forEach(e=>{ const d=daysUntil(e.nextDue); if(d!==null && d<=30 && !e.outOfService) items.push({module:'Equipment', name:e.name, days:d, view:'equipment'}); });
+  state.documents.forEach(d=>{ const dd=daysUntil(d.reviewDate); if(dd!==null && dd<=30 && d.status!=='Obsolete') items.push({module:'Document', name:d.title, days:dd, view:'documents'}); });
+  state.risks.forEach(r=>{ const dd=daysUntil(r.reviewDate); if(dd!==null && dd<=30) items.push({module:'Risk', name:r.title, days:dd, view:'risk'}); });
+  state.competency.forEach(c=>{ const dd=daysUntil(c.expiryDate); if(dd!==null && dd<=30 && c.status==='Authorized') items.push({module:'Competency', name:c.staffName+' — '+c.method, days:dd, view:'competency'}); });
+  state.crm.forEach(c=>{ const dd=daysUntil(c.expiryDate); if(dd!==null && dd<=30) items.push({module:'Traceability', name:c.name, days:dd, view:'traceability'}); });
+  state.ncrs.forEach(n=>{ if(n.status!=='Closed'){ const age = todayDiff(n.raisedDate); items.push({module:'NCR', name:n.title, days: 30-age, view:'ncr'}); } });
+  items.sort((a,b)=>a.days-b.days);
+  return items;
+}
+function renderAlerts(){
+  const items = collectAlerts();
+  const rows = items.map(it=>{
+    const chip = it.days<0 ? '<span class="chip chip-red">Overdue '+Math.abs(it.days)+'d</span>' : it.days<=7 ? '<span class="chip chip-amber">Due in '+it.days+'d</span>' : '<span class="chip chip-grey">Due in '+it.days+'d</span>';
+    return '<tr><td><span class="chip chip-grey">'+it.module+'</span></td><td>'+esc(it.name)+'</td><td>'+chip+'</td><td><button class="btn btn-sm" onclick="showView(\''+it.view+'\')">Open →</button></td></tr>';
+  }).join('');
+  document.getElementById('view-alerts').innerHTML = `
+    <div class="section-head"><h2>Alerts center — everything expiring or overdue, in one place</h2></div>
+    <table><thead><tr><th>Module</th><th>Item</th><th>Status</th><th></th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="4">Nothing due in the next 30 days. The lab is current.</td></tr>'}</tbody></table>
+  `;
+}
+
+/* ============ SCOPE & TEST PARAMETERS (feeds Reports & Competency dropdowns) ============ */
+function renderScopeParams(){
+  const rows = state.scopeparams.map(p=>{
+    return '<tr>'+
+      '<td style="font-weight:600;">'+esc(p.parameter)+'</td>'+
+      '<td>'+esc(p.matrix)+'</td>'+
+      '<td>'+esc(p.method)+'</td>'+
+      '<td class="mono">'+esc(p.range||'—')+'</td>'+
+      '<td class="mono">'+esc(p.mu||'—')+'</td>'+
+      '<td>'+(p.accredited?'<span class="chip chip-teal">Accredited</span>':'<span class="chip chip-grey">Non-accredited / flexible</span>')+'</td>'+
+      '<td style="white-space:nowrap;">'+
+        '<button class="icon-btn" title="Edit" onclick="openScopeForm(\''+p.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncScopeToDrive(\''+p.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteScope(\''+p.id+'\')">✕</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('view-scopeparams').innerHTML = `
+    <div class="section-head"><h2>Scope of accreditation & test parameters</h2>
+      <button class="btn btn-primary" onclick="openScopeForm()">+ Add parameter</button></div>
+    <table><thead><tr><th>Parameter</th><th>Matrix</th><th>Method / standard</th><th>Range</th><th>Typical MU</th><th>Scope</th><th>Actions</th></tr></thead>
+    <tbody>${rows || '<tr class="empty-row"><td colspan="7">No parameters defined yet.</td></tr>'}</tbody></table>
+    <div class="sync-note">Cl. 7.2 — this is the single source of truth for what the lab tests. Test report issuance and Competency & authorization both pull their method dropdowns from this list, so add a parameter here once and it's available everywhere.</div>
+  `;
+}
+function openScopeForm(id){
+  const existing = id ? state.scopeparams.find(x=>x.id===id) : null;
+  const p = existing || { id:uid(), parameter:'', matrix:'Coal', method:'', range:'', mu:'', accredited:true };
+  openModal(`
+    <h3>${existing?'Edit':'Add'} test parameter</h3>
+    <div class="modal-sub">Cl. 7.2 — selection, verification and validation of methods</div>
+    <div class="field"><label>Parameter</label><input id="f-spparam" value="${esc(p.parameter)}" placeholder="e.g. Gross Calorific Value (GCV)"></div>
+    <div id="err-spparam" class="err"></div>
+    <div class="field-row">
+      <div class="field"><label>Matrix / material</label><input id="f-spmatrix" value="${esc(p.matrix)}" placeholder="e.g. Coal"></div>
+      <div class="field"><label>Method / standard</label><input id="f-spmethod" value="${esc(p.method)}" placeholder="e.g. IS 1350 (Part 2)"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Range</label><input id="f-sprange" value="${esc(p.range)}" placeholder="e.g. 2000–8000 kcal/kg"></div>
+      <div class="field"><label>Typical measurement uncertainty</label><input id="f-spmu" value="${esc(p.mu)}" placeholder="e.g. ±80 kcal/kg (k=2)"></div>
+    </div>
+    <div class="field"><label style="display:flex;align-items:center;gap:8px;font-weight:400;"><input type="checkbox" id="f-spacc" ${p.accredited?'checked':''} style="width:auto;"> Within current NABL accredited scope</label></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveScope('${p.id}')">Save parameter</button>
+    </div>
+  `);
+}
+async function saveScope(id){
+  const parameter = document.getElementById('f-spparam').value.trim();
+  if(!parameter){ showFieldError('err-spparam','Enter a parameter name'); return; }
+  const data = { parameter, matrix: document.getElementById('f-spmatrix').value.trim(), method: document.getElementById('f-spmethod').value.trim(),
+    range: document.getElementById('f-sprange').value.trim(), mu: document.getElementById('f-spmu').value.trim(),
+    accredited: document.getElementById('f-spacc').checked };
+  const existing = state.scopeparams.find(x=>x.id===id);
+  if(existing){ Object.assign(existing, data); }
+  else{ state.scopeparams.push({ id, ...data }); }
+  const ok = await saveKey('scopeparams');
+  if(ok){ closeModal(); toast('Parameter saved','ok'); renderScopeParams(); renderDashboard(); }
+}
+async function deleteScope(id){
+  if(!confirm('Remove this parameter from scope?')) return;
+  state.scopeparams = state.scopeparams.filter(x=>x.id!==id);
+  await saveKey('scopeparams'); renderScopeParams(); renderDashboard();
+}
+async function syncScopeToDrive(id){
+  const p = state.scopeparams.find(x=>x.id===id);
+  sendToClaudeForDriveSync('Scope_Parameters', 'Parameter_'+slug(p.parameter)+'.json', { type:'scope_parameter', ...p, exportedAt:new Date().toISOString() });
+}
+function scopeMethodOptions(currentVal){
+  const names = state.scopeparams.map(p=>p.parameter+(p.method?(' — '+p.method):''));
+  const list = names.map(n=>'<option value="'+esc(n)+'">').join('');
+  return '<datalist id="dl-scopemethods">'+list+'</datalist>';
+}
+
+/* ============ GENERIC SIMPLE REGISTRIES (Cl. 4.1/4.2, 7.1, 7.3, 7.9, 8.9, mock audits) ============ */
+const REGISTRY_DEFS = {
+  declarations: {
+    title:'Impartiality & confidentiality declarations', clauseLabel:'Cl. 4.1 / 4.2 — impartiality and confidentiality',
+    requiredField:'staffName', folderLabel:'Declarations_Impartiality', filePrefix:'Declaration',
+    listFields:['staffName','impartialitySigned','confidentialitySigned','date'],
+    fields:[
+      {id:'staffName', label:'Staff member', type:'textDatalist', dynamicOptions:'staff'},
+      {id:'impartialitySigned', label:'Impartiality declaration signed', type:'checkbox'},
+      {id:'confidentialitySigned', label:'Confidentiality declaration signed', type:'checkbox'},
+      {id:'date', label:'Date signed', type:'date'},
+    ],
+    note:'Every staff member with access to results or decisions should have both declarations on file.'
+  },
+  contractreview: {
+    title:'Review of requests, tenders & contracts', clauseLabel:'Cl. 7.1',
+    requiredField:'requestTitle', folderLabel:'Contract_Review', filePrefix:'ContractReview',
+    listFields:['requestTitle','reviewer','reviewDate','outcome'],
+    fields:[
+      {id:'requestTitle', label:'Request / contract', type:'text', placeholder:'e.g. Non-routine ash-fusion test request from Unit-3'},
+      {id:'reviewer', label:'Reviewed by', type:'textDatalist', dynamicOptions:'staff'},
+      {id:'reviewDate', label:'Review date', type:'date'},
+      {id:'outcome', label:'Outcome', type:'select', options:['Accepted','Rejected','Clarification requested'], chip:true, chipMap:{'Accepted':'chip-teal','Rejected':'chip-red','Clarification requested':'chip-amber'}},
+      {id:'notes', label:'Notes', type:'textarea'},
+    ],
+    note:'Confirms lab capability was checked before accepting non-routine or unusual test requests.'
+  },
+  sampleregister: {
+    title:'Sample register & chain of custody', clauseLabel:'Cl. 7.3 / 7.4',
+    requiredField:'sampleId', folderLabel:'Sample_Register', filePrefix:'Sample',
+    listFields:['sampleId','description','receivedDate','status'],
+    fields:[
+      {id:'sampleId', label:'Sample ID', type:'text', placeholder:'e.g. CTL/2026/0091'},
+      {id:'description', label:'Description', type:'text', placeholder:'e.g. Coal sample, Unit-2 bunker'},
+      {id:'receivedDate', label:'Date received', type:'date'},
+      {id:'condition', label:'Condition on receipt', type:'select', options:['Acceptable','Compromised']},
+      {id:'status', label:'Status', type:'select', options:['Received','Under test','Tested','Disposed'], chip:true, chipMap:{'Received':'chip-grey','Under test':'chip-amber','Tested':'chip-teal','Disposed':'chip-grey'}},
+      {id:'custodyNote', label:'Custody / handling notes', type:'textarea'},
+    ],
+    note:'Cl. 7.3 — sample ID here should match the sample ID used in Test report issuance.'
+  },
+  complaints: {
+    title:'Complaints register', clauseLabel:'Cl. 7.9',
+    requiredField:'complainant', folderLabel:'Complaints', filePrefix:'Complaint',
+    listFields:['complainant','description','dateReceived','status'],
+    fields:[
+      {id:'complainant', label:'Complainant', type:'text'},
+      {id:'description', label:'Complaint description', type:'textarea'},
+      {id:'dateReceived', label:'Date received', type:'date'},
+      {id:'response', label:'Response / resolution', type:'textarea'},
+      {id:'status', label:'Status', type:'select', options:['Open','Resolved'], chip:true, chipMap:{'Open':'chip-amber','Resolved':'chip-teal'}},
+    ],
+    note:'Cl. 7.9 — track response time; resolve and record root cause within a defined SLA.'
+  },
+  mgmtreview: {
+    title:'Management review log', clauseLabel:'Cl. 8.9',
+    requiredField:'reviewDate', folderLabel:'Management_Review', filePrefix:'MgmtReview',
+    listFields:['reviewDate','attendees','nextReviewDate'],
+    fields:[
+      {id:'reviewDate', label:'Review date', type:'date'},
+      {id:'attendees', label:'Attendees', type:'text'},
+      {id:'inputsSummary', label:'Inputs reviewed (PT results, complaints, audits, risks...)', type:'textarea'},
+      {id:'decisions', label:'Decisions & actions', type:'textarea'},
+      {id:'nextReviewDate', label:'Next review date', type:'date'},
+    ],
+    note:'Cl. 8.9 — minutes of management review meetings, with inputs and resulting decisions.'
+  },
+  mockaudits: {
+    title:'Internal mock assessments', clauseLabel:'Pre-assessment dry run',
+    requiredField:'sessionDate', folderLabel:'Mock_Assessments', filePrefix:'MockAudit',
+    listFields:['sessionDate','assessorName','findingsCount','outcome'],
+    fields:[
+      {id:'sessionDate', label:'Session date', type:'date'},
+      {id:'assessorName', label:'Internal assessor', type:'textDatalist', dynamicOptions:'staff'},
+      {id:'clausesCovered', label:'Clauses covered', type:'text', placeholder:'e.g. 6.4, 7.6, 7.8, 8.4'},
+      {id:'findingsCount', label:'Findings raised', type:'number'},
+      {id:'outcome', label:'Outcome', type:'select', options:['Satisfactory','Minor findings','Major findings'], chip:true, chipMap:{'Satisfactory':'chip-teal','Minor findings':'chip-amber','Major findings':'chip-red'}},
+      {id:'notes', label:'Notes / findings summary', type:'textarea'},
+    ],
+    note:'Run this before the real NABL assessment. Raise any findings as NCRs in NCR & CAPA and reference them here.'
+  },
+};
+function regTableCell(f, val){
+  if(f.type==='checkbox') return val ? '✓' : '—';
+  if(f.type==='date') return fmtDate(val);
+  if(f.chip) return '<span class="chip '+((f.chipMap && f.chipMap[val]) || 'chip-grey')+'">'+esc(val||'—')+'</span>';
+  return esc(val==null || val===''? '—' : (''+val).slice(0,60));
+}
+function renderGeneric(key){
+  const reg = REGISTRY_DEFS[key];
+  const rows = (state[key]||[]).map(item=>{
+    const tds = reg.listFields.map(fid=>{
+      const f = reg.fields.find(x=>x.id===fid);
+      return '<td>'+regTableCell(f, item[fid])+'</td>';
+    }).join('');
+    return '<tr>'+tds+
+      '<td style="white-space:nowrap;">'+
+        '<button class="icon-btn" title="Edit" onclick="openGenericForm(\''+key+'\',\''+item.id+'\')">✎</button>'+
+        '<button class="icon-btn" title="Sync to Drive" onclick="syncGenericToDrive(\''+key+'\',\''+item.id+'\')">☁</button>'+
+        '<button class="icon-btn" title="Delete" onclick="deleteGeneric(\''+key+'\',\''+item.id+'\')">✕</button>'+
+      '</td></tr>';
+  }).join('');
+  const headCells = reg.listFields.map(fid=>'<th>'+reg.fields.find(x=>x.id===fid).label+'</th>').join('') + '<th>Actions</th>';
+  document.getElementById('view-'+key).innerHTML = `
+    <div class="section-head"><h2>${reg.title}</h2><button class="btn btn-primary" onclick="openGenericForm('${key}')">+ Add entry</button></div>
+    <table><thead><tr>${headCells}</tr></thead><tbody>${rows || '<tr class="empty-row"><td colspan="'+(reg.listFields.length+1)+'">No entries yet.</td></tr>'}</tbody></table>
+    <div class="sync-note">${reg.note||''}</div>
+  `;
+}
+function fieldInputHtml(f, val){
+  const v = val==null?'':val;
+  if(f.type==='textarea') return '<textarea id="gf-'+f.id+'" rows="'+(f.rows||2)+'" placeholder="'+esc(f.placeholder||'')+'">'+esc(v)+'</textarea>';
+  if(f.type==='checkbox') return '<label style="display:flex;align-items:center;gap:8px;font-weight:400;"><input type="checkbox" id="gf-'+f.id+'" '+(v?'checked':'')+' style="width:auto;"> '+f.label+'</label>';
+  if(f.type==='select') return '<select id="gf-'+f.id+'">'+f.options.map(o=>'<option '+(v===o?'selected':'')+'>'+o+'</option>').join('')+'</select>';
+  if(f.type==='date') return '<input type="date" id="gf-'+f.id+'" value="'+esc(v)+'">';
+  if(f.type==='number') return '<input type="number" id="gf-'+f.id+'" value="'+esc(v)+'">';
+  if(f.type==='textDatalist') return '<input id="gf-'+f.id+'" list="dl-'+f.id+'" value="'+esc(v)+'"><datalist id="dl-'+f.id+'">'+(f.options||[]).map(o=>'<option value="'+esc(o)+'">').join('')+'</datalist>';
+  return '<input id="gf-'+f.id+'" value="'+esc(v)+'" placeholder="'+esc(f.placeholder||'')+'">';
+}
+function openGenericForm(key, id){
+  const reg = REGISTRY_DEFS[key];
+  const item = id ? (state[key]||[]).find(x=>x.id===id) : {};
+  const staffNames = state.staff.map(s=>s.name);
+  reg.fields.forEach(f=>{ if(f.dynamicOptions==='staff') f.options = staffNames; });
+  const fieldsHtml = reg.fields.map(f=>{
+    if(f.type==='checkbox') return '<div class="field">'+fieldInputHtml(f, item[f.id])+'</div>';
+    return '<div class="field"><label>'+f.label+'</label>'+fieldInputHtml(f, item[f.id])+(f.id===reg.requiredField?'<div class="err" id="gf-err"></div>':'')+'</div>';
+  }).join('');
+  openModal(`
+    <h3>${id?'Edit':'Add'} — ${reg.title}</h3>
+    <div class="modal-sub">${reg.clauseLabel||''}</div>
+    ${fieldsHtml}
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveGeneric('${key}','${id||''}')">Save</button>
+    </div>
+  `);
+}
+async function saveGeneric(key, id){
+  const reg = REGISTRY_DEFS[key];
+  const data = {};
+  for(const f of reg.fields){
+    const el = document.getElementById('gf-'+f.id);
+    if(!el) continue;
+    data[f.id] = f.type==='checkbox' ? el.checked : (typeof el.value==='string' ? el.value.trim() : el.value);
+  }
+  if(reg.requiredField && !data[reg.requiredField]){
+    const errEl = document.getElementById('gf-err'); if(errEl){ errEl.textContent = 'This field is required'; errEl.style.display='block'; }
+    return;
+  }
+  state[key] = state[key] || [];
+  if(id){ Object.assign(state[key].find(x=>x.id===id), data); }
+  else{ state[key].push({ id:uid(), ...data, createdAt:todayStr() }); }
+  const ok = await saveKey(key);
+  if(ok){ closeModal(); toast('Saved','ok'); renderGeneric(key); renderDashboard(); }
+}
+async function deleteGeneric(key, id){
+  if(!confirm('Delete this entry?')) return;
+  state[key] = state[key].filter(x=>x.id!==id);
+  await saveKey(key); renderGeneric(key); renderDashboard();
+}
+async function syncGenericToDrive(key, id){
+  const reg = REGISTRY_DEFS[key];
+  const item = state[key].find(x=>x.id===id);
+  const label = item[reg.requiredField] || key;
+  sendToClaudeForDriveSync(reg.folderLabel, reg.filePrefix+'_'+slug(label)+'_'+todayStr()+'.json', { type:key, ...item, exportedAt:new Date().toISOString() });
+}
+
+/* ============ SELF-AUDIT ENGINE (doubles as the assessor walkthrough) ============ */
+function pctStatus(pct){ if(pct>=90) return 'green'; if(pct>=60) return 'amber'; return 'red'; }
+const CLAUSE_DEFS = [
+  {code:'4.1–4.2', title:'Impartiality & Confidentiality', view:'declarations', check:()=>{
+    const total = state.staff.length, done = state.declarations.filter(d=>d.impartialitySigned && d.confidentialitySigned).length;
+    if(!total) return {status:'amber', detail:'No staff on record yet — add staff, then collect declarations.'};
+    const pct = Math.round((done/total)*100);
+    return {status:pctStatus(pct), detail: done+' / '+total+' staff have both declarations signed ('+pct+'%).'};
+  }},
+  {code:'6.2', title:'Personnel Competency', view:'competency', check:(r)=>({status:pctStatus(Math.round(r.compScore*100)), detail: Math.round(r.compScore*100)+'% of method authorizations are current and unexpired.'})},
+  {code:'6.3', title:'Facilities & Environment', view:'environment', check:(r)=>({status:pctStatus(Math.round(r.envScore*100)), detail: Math.round(r.envScore*100)+'% of recent environmental readings are within range.'})},
+  {code:'6.4', title:'Equipment', view:'equipment', check:(r)=>({status:pctStatus(Math.round(r.eqScore*100)), detail: r.eqValid+' / '+r.eqTotal+' equipment items have valid calibration.'})},
+  {code:'6.5', title:'Metrological Traceability', view:'traceability', check:(r)=>({status:pctStatus(Math.round(r.crmScore*100)), detail: Math.round(r.crmScore*100)+'% of CRM / reference standards are within validity.'})},
+  {code:'6.6', title:'External Providers', view:'vendor', check:(r)=>({status:pctStatus(Math.round(r.vScore*100)), detail: Math.round(r.vScore*100)+'% of vendors carry Approved status.'})},
+  {code:'7.1', title:'Review of Requests, Tenders, Contracts', view:'contractreview', check:()=>{
+    const n = state.contractreview.length; return n ? {status:'green', detail:n+' contract-review record(s) on file.'} : {status:'amber', detail:'No contract-review records logged yet.'};
+  }},
+  {code:'7.3', title:'Sampling & Chain of Custody', view:'sampleregister', check:()=>{
+    const n = state.sampleregister.length; return n ? {status:'green', detail:n+' sample(s) logged with custody notes.'} : {status:'amber', detail:'No samples logged in the register yet.'};
+  }},
+  {code:'7.5 / 7.11', title:'Technical Records & Data Control', view:'documents', check:()=>({status:'amber', detail:'Records persist in shared cloud storage with created-date stamps; field-level edit history (who / when / old → new) is the one remaining enhancement.'})},
+  {code:'7.6', title:'Measurement Uncertainty', view:'reports', check:()=>{
+    const total = state.reports.length, withMu = state.reports.filter(x=>x.mu).length;
+    if(!total) return {status:'amber', detail:'No test reports logged yet.'};
+    const pct = Math.round((withMu/total)*100);
+    return {status:pctStatus(pct), detail: withMu+' / '+total+' reports have MU recorded ('+pct+'%).'};
+  }},
+  {code:'7.7', title:'Validity of Results / Proficiency Testing', manual:true, check:()=>{
+    const m = state.manualClauses['7.7'];
+    if(m && m.status) return {status:m.status, detail:(m.note || 'Manually confirmed by Quality Manager.'), manual:true};
+    return {status:'amber', detail:'Not yet tracked automatically in this build — confirm PT enrolment / results status manually below.', manual:true};
+  }},
+  {code:'7.8', title:'Reporting', view:'reports', check:(r)=>({status:pctStatus(Math.round(r.reportScore*100)), detail: r.reportsBlocked+' report(s) currently blocked from issuance by the gate.'})},
+  {code:'7.9', title:'Complaints', view:'complaints', check:()=>{
+    const total = state.complaints.length, open = state.complaints.filter(c=>c.status!=='Resolved').length;
+    if(!total) return {status:'green', detail:'No complaints on record.'};
+    return {status: open===0?'green':(open<=Math.ceil(total*0.3)?'amber':'red'), detail: open+' of '+total+' complaint(s) still open.'};
+  }},
+  {code:'7.10', title:'Nonconforming Work / NCR', view:'ncr', check:(r)=>({status:pctStatus(Math.round(r.ncrScore*100)), detail: state.ncrs.filter(n=>n.status!=='Closed').length+' NCR(s) currently open.'})},
+  {code:'8.2 / 8.3', title:'Document Control', view:'documents', check:(r)=>({status:pctStatus(Math.round(r.docScore*100)), detail: Math.round(r.docScore*100)+'% of controlled documents are current and within their review window.'})},
+  {code:'8.4', title:'Control of Records', view:'documents', check:()=>({status:'amber', detail:'Records are stored persistently and shared lab-wide; a documented backup/restore test and a granular audit trail are the remaining items.'})},
+  {code:'8.5', title:'Risks & Opportunities', view:'risk', check:(r)=>({status:pctStatus(Math.round(r.riskScore*100)), detail: Math.round(r.riskScore*100)+'% of logged risks are within their review window.'})},
+  {code:'8.9', title:'Management Review', view:'mgmtreview', check:()=>{
+    const n = state.mgmtreview.length; if(!n) return {status:'amber', detail:'No management review logged yet.'};
+    const latest = state.mgmtreview.slice().sort((a,b)=>new Date(b.reviewDate)-new Date(a.reviewDate))[0];
+    const d = daysUntil(latest.nextReviewDate);
+    if(d===null) return {status:'green', detail:n+' review(s) logged. Latest: '+fmtDate(latest.reviewDate)+'.'};
+    return {status: d<0?'red':(d<=30?'amber':'green'), detail:'Latest review '+fmtDate(latest.reviewDate)+'. Next review due '+fmtDate(latest.nextReviewDate)+'.'};
+  }},
+];
+function renderSelfAudit(){
+  const r = computeReadiness();
+  const counts = {green:0, amber:0, red:0};
+  const rows = CLAUSE_DEFS.map(c=>{
+    const res = c.check(r);
+    counts[res.status]++;
+    const chip = res.status==='green' ? '<span class="chip chip-teal">Compliant</span>' : res.status==='amber' ? '<span class="chip chip-amber">Partial</span>' : '<span class="chip chip-red">Gap</span>';
+    let manualControl = '';
+    if(res.manual){
+      const cur = state.manualClauses[c.code] || {};
+      manualControl = '<div style="margin-top:8px;"><select class="manual-select" onchange="setManualClauseStatus(\''+c.code+'\', this.value)">'+
+        ['','green','amber','red'].map(s=>'<option value="'+s+'" '+((cur.status||'')===s?'selected':'')+'>'+(s?(s.charAt(0).toUpperCase()+s.slice(1)):'Set status manually…')+'</option>').join('')+
+        '</select> <input class="manual-select" style="width:220px;" placeholder="Note (e.g. PT provider, next round due)" value="'+esc(cur.note||'')+'" onchange="setManualClauseNote(\''+c.code+'\', this.value)"></div>';
+    }
+    const evidenceBtn = c.view ? '<button class="btn btn-sm" style="margin-top:6px;" onclick="showView(\''+c.view+'\')">View evidence →</button>' : '';
+    return '<div class="clause-row"><div class="clause-code">'+c.code+'</div><div>'+c.title+'</div><div class="clause-status">'+chip+'</div><div class="muted small">'+esc(res.detail)+manualControl+evidenceBtn+'</div></div>';
+  }).join('');
+  document.getElementById('view-selfaudit').innerHTML = `
+    <div class="section-head"><h2>Self-audit — full ISO/IEC 17025:2017 clause checklist</h2>
+      <button class="btn btn-primary" onclick="syncSelfAuditToDrive()">☁ Save this run to Drive</button></div>
+    <div class="grid grid-3" style="margin-bottom:16px;">
+      <div class="card kpi"><div class="label">Compliant</div><div class="value" style="color:var(--teal-d);">${counts.green}</div></div>
+      <div class="card kpi"><div class="label">Partial</div><div class="value" style="color:var(--amber-d);">${counts.amber}</div></div>
+      <div class="card kpi"><div class="label">Gap</div><div class="value" style="color:var(--red-d);">${counts.red}</div></div>
+    </div>
+    <div class="card">${rows}</div>
+    <div class="sync-note">This re-runs against live data every time the page opens — nothing here is a status someone forgot to update. Amber/red rows explain exactly what's missing, and "View evidence" jumps straight to the source module.</div>
+  `;
+}
+async function setManualClauseStatus(code, status){
+  state.manualClauses[code] = state.manualClauses[code] || {};
+  state.manualClauses[code].status = status || undefined;
+  await saveManualClauses(); renderSelfAudit(); renderDashboard();
+}
+async function setManualClauseNote(code, note){
+  state.manualClauses[code] = state.manualClauses[code] || {};
+  state.manualClauses[code].note = note;
+  await saveManualClauses();
+}
+function syncSelfAuditToDrive(){
+  const r = computeReadiness();
+  const results = CLAUSE_DEFS.map(c=>{ const res=c.check(r); return { clause:c.code, title:c.title, status:res.status, detail:res.detail }; });
+  sendToClaudeForDriveSync('Data_Snapshots', 'SelfAudit_'+todayStr()+'.json', { type:'self_audit_run', runAt:new Date().toISOString(), overallReadiness:r.overall, results });
+}
+
+/* ============ CLAUSE EXPLORER (deep clause / sub-clause tree for the auditor) ============ */
+const CLAUSE_TREE = [
+  { group:'Clause 4', groupTitle:'General Requirements', subclauses:[
+    {code:'4.1', title:'Impartiality', view:'declarations'},
+    {code:'4.2', title:'Confidentiality', view:'declarations'},
+  ]},
+  { group:'Clause 5', groupTitle:'Structural Requirements', subclauses:[
+    {code:'5.1–5.7', title:'Legal identity, organisation, management & responsibilities', view:null, note:'Documented in the Quality Manual — tag the relevant sections in Document control with clause "5" to surface them here.'},
+  ]},
+  { group:'Clause 6', groupTitle:'Resource Requirements', subclauses:[
+    {code:'6.2', title:'Personnel', view:'competency'},
+    {code:'6.3', title:'Facilities & Environmental Conditions', view:'environment'},
+    {code:'6.4', title:'Equipment', view:'equipment'},
+    {code:'6.5', title:'Metrological Traceability', view:'traceability'},
+    {code:'6.6', title:'Externally Provided Products & Services', view:'vendor'},
+  ]},
+  { group:'Clause 7', groupTitle:'Process Requirements', subclauses:[
+    {code:'7.1', title:'Review of Requests, Tenders & Contracts', view:'contractreview'},
+    {code:'7.2', title:'Selection, Verification & Validation of Methods', view:'scopeparams'},
+    {code:'7.3', title:'Sampling', view:'sampleregister'},
+    {code:'7.4', title:'Handling of Test Items', view:'sampleregister', note:'Captured via the custody / handling notes on each sample.'},
+    {code:'7.5', title:'Technical Records', view:'reports'},
+    {code:'7.6', title:'Measurement Uncertainty', view:'reports'},
+    {code:'7.7', title:'Ensuring Validity of Results (Proficiency Testing)', view:null, note:'Not yet an automated module — status is set manually in Self-audit under clause 7.7.'},
+    {code:'7.8', title:'Reporting of Results', view:'reports'},
+    {code:'7.9', title:'Complaints', view:'complaints'},
+    {code:'7.10', title:'Nonconforming Work', view:'ncr'},
+    {code:'7.11', title:'Control of Data & Information Management', view:null, note:'System-level control — see the persistence/audit-trail note under clause 8.4 in Self-audit.'},
+  ]},
+  { group:'Clause 8', groupTitle:'Management System Requirements', subclauses:[
+    {code:'8.2', title:'Management System Documentation', view:'documents'},
+    {code:'8.3', title:'Control of Documents', view:'documents'},
+    {code:'8.4', title:'Control of Records', view:null, note:'Records persist in shared cloud storage across every module in this system.'},
+    {code:'8.5', title:'Risks & Opportunities', view:'risk'},
+    {code:'8.6', title:'Improvement', view:'mgmtreview', note:'Captured as decisions/actions in the Management review log.'},
+    {code:'8.7', title:'Corrective Actions', view:'ncr', note:'Same records as NCR & CAPA.'},
+    {code:'8.8', title:'Internal Audits', view:'mockaudits'},
+    {code:'8.9', title:'Management Review', view:'mgmtreview'},
+  ]},
+];
+const VIEW_STATE_KEY = { declarations:'declarations', competency:'competency', environment:'envlogs', equipment:'equipment',
+  traceability:'crm', vendor:'vendors', contractreview:'contractreview', scopeparams:'scopeparams', sampleregister:'sampleregister',
+  reports:'reports', complaints:'complaints', ncr:'ncrs', documents:'documents', risk:'risks', mgmtreview:'mgmtreview', mockaudits:'mockaudits' };
+function retainedInfo(view){
+  const arr = state[VIEW_STATE_KEY[view]] || [];
+  switch(view){
+    case 'documents': { const n = arr.reduce((s,d)=>s+((d.history||[]).length),0); return {label:'Obsolete document versions', count:n}; }
+    case 'ncr': return {label:'Closed NCRs', count: arr.filter(x=>x.status==='Closed').length};
+    case 'complaints': return {label:'Resolved complaints', count: arr.filter(x=>x.status==='Resolved').length};
+    case 'competency': return {label:'Expired / suspended authorizations', count: arr.filter(c=>c.status!=='Authorized' || (daysUntil(c.expiryDate)??0)<0).length};
+    case 'traceability': return {label:'Expired reference standards', count: arr.filter(c=>(daysUntil(c.expiryDate)??0)<0).length};
+    case 'environment': return {label:'Out-of-range readings', count: arr.filter(e=>envExcursion(e)).length};
+    case 'equipment': { const n = arr.reduce((s,e)=>s+((e.history||[]).length),0); return {label:'Equipment history log entries', count:n}; }
+    case 'reports': return {label:'Issued reports', count: arr.filter(r=>r.status==='Issued').length};
+    default: return null;
+  }
+}
+function renderClauseExplorer(){
+  const groupsHtml = CLAUSE_TREE.map(g=>{
+    const rowsHtml = g.subclauses.map(sc=>{
+      const procs = state.documents.filter(d => (d.clauseTags||'').split(',').map(x=>x.trim()).some(t=>t && (sc.code.includes(t) || t.includes(sc.code.split('–')[0]))));
+      const procHtml = procs.length
+        ? procs.map(d=>'<div>'+esc(d.title)+' <span class="muted">(v'+esc(d.version)+')</span></div>').join('')
+        : '<span class="muted">No procedure tagged yet — add a clause tag in Document control.</span>';
+      const recordsHtml = sc.view
+        ? '<button class="btn btn-sm" onclick="showView(\''+sc.view+'\')">'+(state[VIEW_STATE_KEY[sc.view]]||[]).length+' record(s) →</button>'
+        : '<span class="muted small">'+(sc.note||'No dedicated module.')+'</span>';
+      const ret = sc.view ? retainedInfo(sc.view) : null;
+      const retainedHtml = ret ? (ret.count+' — '+ret.label) : '<span class="muted small">—</span>';
+      return '<div class="clause-row" style="grid-template-columns:80px 1.4fr 1fr 1.2fr;">'+
+        '<div class="clause-code">'+sc.code+'</div>'+
+        '<div><strong>'+sc.title+'</strong><div class="small" style="margin-top:4px;">'+procHtml+'</div></div>'+
+        '<div>'+recordsHtml+'</div>'+
+        '<div class="small muted">'+retainedHtml+'</div>'+
+      '</div>';
+    }).join('');
+    return `<details class="card" style="margin-bottom:12px;" open>
+      <summary style="cursor:pointer;font-weight:600;font-size:14px;">${g.group} — ${g.groupTitle}</summary>
+      <div style="margin-top:10px;">
+        <div class="clause-row" style="grid-template-columns:80px 1.4fr 1fr 1.2fr;border-bottom:2px solid var(--border);font-size:11px;text-transform:uppercase;color:var(--ink-3);font-weight:600;">
+          <div>Clause</div><div>Sub-clause & procedures</div><div>Live records</div><div>Retained records</div>
+        </div>
+        ${rowsHtml}
+      </div>
+    </details>`;
+  }).join('');
+  document.getElementById('view-clauseexplorer').innerHTML = `
+    <div class="section-head"><h2>Clause explorer — everything mapped to ISO/IEC 17025:2017</h2>
+      <button class="btn btn-sm" onclick="showView('selfaudit')">View compliance scoring →</button></div>
+    <div class="sync-note" style="margin-bottom:14px;">For the assessor: expand a clause group to see, per sub-clause, the tagged procedure(s), live current records, and retained (historical/closed) records. Tag documents with clause numbers in Document control to populate the "Procedures" column.</div>
+    ${groupsHtml}
+  `;
+}
+
+/* ============ ASSESSOR MODE ============ */
+function enterAssessorMode(){
+  document.body.classList.add('assessor-mode');
+  document.getElementById('assessorBanner').classList.remove('hidden');
+  showView('clauseexplorer');
+  toast('Assessor view active — all edit, delete and sync controls are hidden','ok');
+}
+function exitAssessorMode(){
+  document.body.classList.remove('assessor-mode');
+  document.getElementById('assessorBanner').classList.add('hidden');
+  showView('dashboard');
+}
+
+/* ============ DRIVE SYNC ============ */
+
+function sendToClaudeForDriveSync(folderName, filename, payload){
+  const text = 'Sync this LIMS record to Google Drive.\nFolder: ' + folderName + '\nFilename: ' + filename +
+    '\nData:\n```json\n' + JSON.stringify(payload, null, 2) + '\n```';
+  if(typeof sendPrompt === 'function'){ sendPrompt(text); toast('Sent to Claude to save in Drive → ' + folderName,'ok'); }
+  else{ toast('sendPrompt unavailable in this view','err'); }
+}
+function syncAllToDrive(){
+  const payload = { type:'full_snapshot', generatedAt:new Date().toISOString(),
+    counts:{ trainings:state.trainings.length, equipment:state.equipment.length, vendors:state.vendors.length, procurement:state.procurement.length,
+      staff:state.staff.length, documents:state.documents.length, risks:state.risks.length, ncrs:state.ncrs.length,
+      competency:state.competency.length, crm:state.crm.length, envlogs:state.envlogs.length, reports:state.reports.length },
+    readiness: computeReadiness(),
+    trainings: state.trainings, equipment: state.equipment, vendors: state.vendors, procurement: state.procurement, staff: state.staff,
+    documents: state.documents, risks: state.risks, ncrs: state.ncrs, nabldocs: state.nabldocs,
+    competency: state.competency, crm: state.crm, envlogs: state.envlogs, reports: state.reports
+  };
+  sendToClaudeForDriveSync('Data_Snapshots', 'LIMS_Snapshot_'+todayStr()+'.json', payload);
+}
+
+/* ============ INIT ============ */
+async function init(){
+  renderNav();
+  updateDriveStatusUI();
+  await loadAll();
+  await loadCurrentUser();
+  setupRouting();
+  const startView = (location.hash||'').replace('#','') || 'dashboard';
+  showView(NAV_ITEMS.find(n=>n.id===startView) ? startView : 'dashboard');
+  refreshStorageModeNote();
+}
+function refreshStorageModeNote(){
+  const note = document.getElementById('storageModeNote');
+  if(!note) return;
+  if(driveConnected){ note.classList.add('hidden'); return; }
+  note.textContent = window._usingLocalStorageFallback
+    ? '⚠ Data is saved in this browser only. Click "Connect Google Drive" above for shared, backed-up storage — no claude.ai required.'
+    : '⚠ Standalone mode — data is saved in this browser only, not shared with other staff. Deploy inside claude.ai, or connect Google Drive above, to enable shared storage.';
+  note.classList.remove('hidden');
+}
+init();
+</script>
+</body>
+</html>
